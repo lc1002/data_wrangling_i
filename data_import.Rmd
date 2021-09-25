@@ -29,3 +29,41 @@ Yay! Now I have better names. Let's look at the dataset.
 
 ## Take a look at the data 
 
+printing in the console. 
+
+```{r}
+litters_df
+
+# print out the first few rows of the data.
+head(litters_df)
+
+#print out the last few rows of the data.
+tail(litters_df)
+```
+
+One I use a lot is:
+
+```{r}
+view(litters_df) ## put it in the console often not the code chunk, might make knitting process a little difficult.
+```
+
+Here's `skimr`: 
+
+```{r}
+skimr::skim(litters_df)
+```
+
+## Arguments in`read_csv`
+
+```{r,eval=FALSE}
+litters_df = 
+  read_csv(
+    "data/FAS_litters.csv",
+    skip = 5,
+    col_names = FALSE, 
+    show_col_types = FALSE, 
+    na = "Low8")
+```
+
+check out `?read_csv()` for more information. 
+
