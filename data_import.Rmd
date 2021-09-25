@@ -103,3 +103,15 @@ pulse_df = read_sas("data/public_pulse_data.sas7bdat")
 pulse_df
 ```
 
+## Comparison with Base R
+
+what about `read.csv` ...?WHY TO NEVER `read.csv`
+
+read.csv --> read the data out as data frame not tibble.
+
+`read.csv` doesn't give `tibble` and that's really bad.
+
+```{r, eval=FALSE}
+litters_df_base = read.csv("data/FAS_litters.csv")
+```
+

@@ -314,3 +314,15 @@ pulse_df
     ##  9 10091  76.0 male             0            3            4            0
     ## 10 10092  74.2 female          10            2           11            6
     ## # ... with 1,077 more rows
+
+## Comparison with Base R
+
+what about `read.csv` …?WHY TO NEVER `read.csv`
+
+read.csv –&gt; read the data out as data frame not tibble.
+
+`read.csv` doesn’t give `tibble` and that’s really bad.
+
+``` r
+litters_df_base = read.csv("data/FAS_litters.csv")
+```
