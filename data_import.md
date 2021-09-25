@@ -326,3 +326,11 @@ read.csv –&gt; read the data out as data frame not tibble.
 ``` r
 litters_df_base = read.csv("data/FAS_litters.csv")
 ```
+
+## How do i export data
+
+there’s a good way!
+
+``` r
+write_csv(fellow_df,"data/fellowship_words.csv")
+```
