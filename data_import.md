@@ -249,3 +249,12 @@ litters_df =
 ```
 
 check out `?read_csv()` for more information.
+
+## Parsing columns
+
+Not listing every single column. Specify a single column
+
+``` r
+litters_data = read_csv(file = "./data/FAS_litters.csv",
+  col_types = cols(`GD of Birth` = col_integer()))
+```
