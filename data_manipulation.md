@@ -21,10 +21,38 @@ library(tidyverse)
 I want to import `FAS_litters.csv`.
 
 ``` r
-litters_df = read.csv("data/FAS_litters.csv")
+litters_df = read_csv("data/FAS_litters.csv")
+```
+
+    ## Rows: 49 Columns: 8
+
+    ## -- Column specification --------------------------------------------------------
+    ## Delimiter: ","
+    ## chr (2): Group, Litter Number
+    ## dbl (6): GD0 weight, GD18 weight, GD of Birth, Pups born alive, Pups dead @ ...
+
+    ## 
+    ## i Use `spec()` to retrieve the full column specification for this data.
+    ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
 litters_df = janitor::clean_names(litters_df)
 
-pups_df = read.csv("data/FAS_pups.csv")
+pups_df = read_csv("data/FAS_pups.csv")
+```
+
+    ## Rows: 313 Columns: 6
+
+    ## -- Column specification --------------------------------------------------------
+    ## Delimiter: ","
+    ## chr (1): Litter Number
+    ## dbl (5): Sex, PD ears, PD eyes, PD pivot, PD walk
+
+    ## 
+    ## i Use `spec()` to retrieve the full column specification for this data.
+    ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
 pups_df = janitor::clean_names(pups_df)
 ```
 
@@ -36,1074 +64,217 @@ Let’s select some columns.
 select(litters_df, group, litter_number)
 ```
 
-    ##    group   litter_number
-    ## 1   Con7             #85
-    ## 2   Con7       #1/2/95/2
-    ## 3   Con7   #5/5/3/83/3-3
-    ## 4   Con7     #5/4/2/95/2
-    ## 5   Con7     #4/2/95/3-3
-    ## 6   Con7     #2/2/95/3-2
-    ## 7   Con7 #1/5/3/83/3-3/2
-    ## 8   Con8       #3/83/3-3
-    ## 9   Con8         #2/95/3
-    ## 10  Con8     #3/5/2/2/95
-    ## 11  Con8     #5/4/3/83/3
-    ## 12  Con8   #1/6/2/2/95-2
-    ## 13  Con8 #3/5/3/83/3-3-2
-    ## 14  Con8       #2/2/95/2
-    ## 15  Con8   #3/6/2/2/95-3
-    ## 16  Mod7             #59
-    ## 17  Mod7            #103
-    ## 18  Mod7       #1/82/3-2
-    ## 19  Mod7       #3/83/3-2
-    ## 20  Mod7       #2/95/2-2
-    ## 21  Mod7       #3/82/3-2
-    ## 22  Mod7       #4/2/95/2
-    ## 23  Mod7     #5/3/83/5-2
-    ## 24  Mod7      #8/110/3-2
-    ## 25  Mod7            #106
-    ## 26  Mod7           #94/2
-    ## 27  Mod7             #62
-    ## 28  Low7           #84/2
-    ## 29  Low7            #107
-    ## 30  Low7           #85/2
-    ## 31  Low7             #98
-    ## 32  Low7            #102
-    ## 33  Low7            #101
-    ## 34  Low7            #111
-    ## 35  Low7            #112
-    ## 36  Mod8             #97
-    ## 37  Mod8           #5/93
-    ## 38  Mod8         #5/93/2
-    ## 39  Mod8       #7/82-3-2
-    ## 40  Mod8      #7/110/3-2
-    ## 41  Mod8         #2/95/2
-    ## 42  Mod8           #82/4
-    ## 43  Low8             #53
-    ## 44  Low8             #79
-    ## 45  Low8            #100
-    ## 46  Low8           #4/84
-    ## 47  Low8            #108
-    ## 48  Low8             #99
-    ## 49  Low8            #110
+    ## # A tibble: 49 x 2
+    ##    group litter_number  
+    ##    <chr> <chr>          
+    ##  1 Con7  #85            
+    ##  2 Con7  #1/2/95/2      
+    ##  3 Con7  #5/5/3/83/3-3  
+    ##  4 Con7  #5/4/2/95/2    
+    ##  5 Con7  #4/2/95/3-3    
+    ##  6 Con7  #2/2/95/3-2    
+    ##  7 Con7  #1/5/3/83/3-3/2
+    ##  8 Con8  #3/83/3-3      
+    ##  9 Con8  #2/95/3        
+    ## 10 Con8  #3/5/2/2/95    
+    ## # ... with 39 more rows
 
 ``` r
 select(litters_df, group, gd0_weight, gd18_weight)
 ```
 
+    ## # A tibble: 49 x 3
     ##    group gd0_weight gd18_weight
-    ## 1   Con7       19.7        34.7
-    ## 2   Con7       27.0        42.0
-    ## 3   Con7       26.0        41.4
-    ## 4   Con7       28.5        44.1
-    ## 5   Con7         NA          NA
-    ## 6   Con7         NA          NA
-    ## 7   Con7         NA          NA
-    ## 8   Con8         NA          NA
-    ## 9   Con8         NA          NA
-    ## 10  Con8       28.5          NA
-    ## 11  Con8       28.0          NA
-    ## 12  Con8         NA          NA
-    ## 13  Con8         NA          NA
-    ## 14  Con8         NA          NA
-    ## 15  Con8         NA          NA
-    ## 16  Mod7       17.0        33.4
-    ## 17  Mod7       21.4        42.1
-    ## 18  Mod7         NA          NA
-    ## 19  Mod7         NA          NA
-    ## 20  Mod7         NA          NA
-    ## 21  Mod7       28.0        45.9
-    ## 22  Mod7       23.5          NA
-    ## 23  Mod7       22.6        37.0
-    ## 24  Mod7         NA          NA
-    ## 25  Mod7       21.7        37.8
-    ## 26  Mod7       24.4        42.9
-    ## 27  Mod7       19.5        35.9
-    ## 28  Low7       24.3        40.8
-    ## 29  Low7       22.6        42.4
-    ## 30  Low7       22.2        38.5
-    ## 31  Low7       23.8        43.8
-    ## 32  Low7       22.6        43.3
-    ## 33  Low7       23.8        42.7
-    ## 34  Low7       25.5        44.6
-    ## 35  Low7       23.9        40.5
-    ## 36  Mod8       24.5        42.8
-    ## 37  Mod8         NA        41.1
-    ## 38  Mod8         NA          NA
-    ## 39  Mod8       26.9        43.2
-    ## 40  Mod8       27.5        46.0
-    ## 41  Mod8       28.5        44.5
-    ## 42  Mod8       33.4        52.7
-    ## 43  Low8       21.8        37.2
-    ## 44  Low8       25.4        43.8
-    ## 45  Low8       20.0        39.2
-    ## 46  Low8       21.8        35.2
-    ## 47  Low8       25.6        47.5
-    ## 48  Low8       23.5        39.0
-    ## 49  Low8       25.5        42.7
+    ##    <chr>      <dbl>       <dbl>
+    ##  1 Con7        19.7        34.7
+    ##  2 Con7        27          42  
+    ##  3 Con7        26          41.4
+    ##  4 Con7        28.5        44.1
+    ##  5 Con7        NA          NA  
+    ##  6 Con7        NA          NA  
+    ##  7 Con7        NA          NA  
+    ##  8 Con8        NA          NA  
+    ##  9 Con8        NA          NA  
+    ## 10 Con8        28.5        NA  
+    ## # ... with 39 more rows
 
 ``` r
 # To select a sequence number of columns in the data use ":"
 select(litters_df, group, gd0_weight:gd_of_birth)
 ```
 
+    ## # A tibble: 49 x 4
     ##    group gd0_weight gd18_weight gd_of_birth
-    ## 1   Con7       19.7        34.7          20
-    ## 2   Con7       27.0        42.0          19
-    ## 3   Con7       26.0        41.4          19
-    ## 4   Con7       28.5        44.1          19
-    ## 5   Con7         NA          NA          20
-    ## 6   Con7         NA          NA          20
-    ## 7   Con7         NA          NA          20
-    ## 8   Con8         NA          NA          20
-    ## 9   Con8         NA          NA          20
-    ## 10  Con8       28.5          NA          20
-    ## 11  Con8       28.0          NA          19
-    ## 12  Con8         NA          NA          20
-    ## 13  Con8         NA          NA          20
-    ## 14  Con8         NA          NA          19
-    ## 15  Con8         NA          NA          20
-    ## 16  Mod7       17.0        33.4          19
-    ## 17  Mod7       21.4        42.1          19
-    ## 18  Mod7         NA          NA          19
-    ## 19  Mod7         NA          NA          19
-    ## 20  Mod7         NA          NA          20
-    ## 21  Mod7       28.0        45.9          20
-    ## 22  Mod7       23.5          NA          19
-    ## 23  Mod7       22.6        37.0          19
-    ## 24  Mod7         NA          NA          20
-    ## 25  Mod7       21.7        37.8          20
-    ## 26  Mod7       24.4        42.9          19
-    ## 27  Mod7       19.5        35.9          19
-    ## 28  Low7       24.3        40.8          20
-    ## 29  Low7       22.6        42.4          20
-    ## 30  Low7       22.2        38.5          20
-    ## 31  Low7       23.8        43.8          20
-    ## 32  Low7       22.6        43.3          20
-    ## 33  Low7       23.8        42.7          20
-    ## 34  Low7       25.5        44.6          20
-    ## 35  Low7       23.9        40.5          19
-    ## 36  Mod8       24.5        42.8          20
-    ## 37  Mod8         NA        41.1          20
-    ## 38  Mod8         NA          NA          19
-    ## 39  Mod8       26.9        43.2          20
-    ## 40  Mod8       27.5        46.0          19
-    ## 41  Mod8       28.5        44.5          20
-    ## 42  Mod8       33.4        52.7          20
-    ## 43  Low8       21.8        37.2          20
-    ## 44  Low8       25.4        43.8          19
-    ## 45  Low8       20.0        39.2          20
-    ## 46  Low8       21.8        35.2          20
-    ## 47  Low8       25.6        47.5          20
-    ## 48  Low8       23.5        39.0          20
-    ## 49  Low8       25.5        42.7          20
+    ##    <chr>      <dbl>       <dbl>       <dbl>
+    ##  1 Con7        19.7        34.7          20
+    ##  2 Con7        27          42            19
+    ##  3 Con7        26          41.4          19
+    ##  4 Con7        28.5        44.1          19
+    ##  5 Con7        NA          NA            20
+    ##  6 Con7        NA          NA            20
+    ##  7 Con7        NA          NA            20
+    ##  8 Con8        NA          NA            20
+    ##  9 Con8        NA          NA            20
+    ## 10 Con8        28.5        NA            20
+    ## # ... with 39 more rows
 
 ``` r
 # Select all columns that start with "pups" or use end_with to select all columns that end with specific characters or contains
 select(litters_df,group, starts_with("pups"))
 ```
 
+    ## # A tibble: 49 x 4
     ##    group pups_born_alive pups_dead_birth pups_survive
-    ## 1   Con7               3               4            3
-    ## 2   Con7               8               0            7
-    ## 3   Con7               6               0            5
-    ## 4   Con7               5               1            4
-    ## 5   Con7               6               0            6
-    ## 6   Con7               6               0            4
-    ## 7   Con7               9               0            9
-    ## 8   Con8               9               1            8
-    ## 9   Con8               8               0            8
-    ## 10  Con8               8               0            8
-    ## 11  Con8               9               0            8
-    ## 12  Con8               7               0            6
-    ## 13  Con8               8               0            8
-    ## 14  Con8               5               0            4
-    ## 15  Con8               7               0            7
-    ## 16  Mod7               8               0            5
-    ## 17  Mod7               9               1            9
-    ## 18  Mod7               6               0            6
-    ## 19  Mod7               8               0            8
-    ## 20  Mod7               7               0            7
-    ## 21  Mod7               5               0            5
-    ## 22  Mod7               9               0            7
-    ## 23  Mod7               5               0            5
-    ## 24  Mod7               9               0            9
-    ## 25  Mod7               5               0            2
-    ## 26  Mod7               7               1            3
-    ## 27  Mod7               7               2            4
-    ## 28  Low7               8               0            8
-    ## 29  Low7               9               0            8
-    ## 30  Low7               8               0            6
-    ## 31  Low7               9               0            9
-    ## 32  Low7              11               0            7
-    ## 33  Low7               9               0            9
-    ## 34  Low7               3               2            3
-    ## 35  Low7               6               1            1
-    ## 36  Mod8               8               1            8
-    ## 37  Mod8              11               0            9
-    ## 38  Mod8               8               0            8
-    ## 39  Mod8               7               0            7
-    ## 40  Mod8               8               1            8
-    ## 41  Mod8               9               0            9
-    ## 42  Mod8               8               0            6
-    ## 43  Low8               8               1            7
-    ## 44  Low8               8               0            7
-    ## 45  Low8               8               0            7
-    ## 46  Low8               4               0            4
-    ## 47  Low8               8               0            7
-    ## 48  Low8               6               0            5
-    ## 49  Low8               7               0            6
+    ##    <chr>           <dbl>           <dbl>        <dbl>
+    ##  1 Con7                3               4            3
+    ##  2 Con7                8               0            7
+    ##  3 Con7                6               0            5
+    ##  4 Con7                5               1            4
+    ##  5 Con7                6               0            6
+    ##  6 Con7                6               0            4
+    ##  7 Con7                9               0            9
+    ##  8 Con8                9               1            8
+    ##  9 Con8                8               0            8
+    ## 10 Con8                8               0            8
+    ## # ... with 39 more rows
 
 ``` r
 # Select all columns except litter_number
 select(litters_df, -litter_number)
 ```
 
+    ## # A tibble: 49 x 7
     ##    group gd0_weight gd18_weight gd_of_birth pups_born_alive pups_dead_birth
-    ## 1   Con7       19.7        34.7          20               3               4
-    ## 2   Con7       27.0        42.0          19               8               0
-    ## 3   Con7       26.0        41.4          19               6               0
-    ## 4   Con7       28.5        44.1          19               5               1
-    ## 5   Con7         NA          NA          20               6               0
-    ## 6   Con7         NA          NA          20               6               0
-    ## 7   Con7         NA          NA          20               9               0
-    ## 8   Con8         NA          NA          20               9               1
-    ## 9   Con8         NA          NA          20               8               0
-    ## 10  Con8       28.5          NA          20               8               0
-    ## 11  Con8       28.0          NA          19               9               0
-    ## 12  Con8         NA          NA          20               7               0
-    ## 13  Con8         NA          NA          20               8               0
-    ## 14  Con8         NA          NA          19               5               0
-    ## 15  Con8         NA          NA          20               7               0
-    ## 16  Mod7       17.0        33.4          19               8               0
-    ## 17  Mod7       21.4        42.1          19               9               1
-    ## 18  Mod7         NA          NA          19               6               0
-    ## 19  Mod7         NA          NA          19               8               0
-    ## 20  Mod7         NA          NA          20               7               0
-    ## 21  Mod7       28.0        45.9          20               5               0
-    ## 22  Mod7       23.5          NA          19               9               0
-    ## 23  Mod7       22.6        37.0          19               5               0
-    ## 24  Mod7         NA          NA          20               9               0
-    ## 25  Mod7       21.7        37.8          20               5               0
-    ## 26  Mod7       24.4        42.9          19               7               1
-    ## 27  Mod7       19.5        35.9          19               7               2
-    ## 28  Low7       24.3        40.8          20               8               0
-    ## 29  Low7       22.6        42.4          20               9               0
-    ## 30  Low7       22.2        38.5          20               8               0
-    ## 31  Low7       23.8        43.8          20               9               0
-    ## 32  Low7       22.6        43.3          20              11               0
-    ## 33  Low7       23.8        42.7          20               9               0
-    ## 34  Low7       25.5        44.6          20               3               2
-    ## 35  Low7       23.9        40.5          19               6               1
-    ## 36  Mod8       24.5        42.8          20               8               1
-    ## 37  Mod8         NA        41.1          20              11               0
-    ## 38  Mod8         NA          NA          19               8               0
-    ## 39  Mod8       26.9        43.2          20               7               0
-    ## 40  Mod8       27.5        46.0          19               8               1
-    ## 41  Mod8       28.5        44.5          20               9               0
-    ## 42  Mod8       33.4        52.7          20               8               0
-    ## 43  Low8       21.8        37.2          20               8               1
-    ## 44  Low8       25.4        43.8          19               8               0
-    ## 45  Low8       20.0        39.2          20               8               0
-    ## 46  Low8       21.8        35.2          20               4               0
-    ## 47  Low8       25.6        47.5          20               8               0
-    ## 48  Low8       23.5        39.0          20               6               0
-    ## 49  Low8       25.5        42.7          20               7               0
-    ##    pups_survive
-    ## 1             3
-    ## 2             7
-    ## 3             5
-    ## 4             4
-    ## 5             6
-    ## 6             4
-    ## 7             9
-    ## 8             8
-    ## 9             8
-    ## 10            8
-    ## 11            8
-    ## 12            6
-    ## 13            8
-    ## 14            4
-    ## 15            7
-    ## 16            5
-    ## 17            9
-    ## 18            6
-    ## 19            8
-    ## 20            7
-    ## 21            5
-    ## 22            7
-    ## 23            5
-    ## 24            9
-    ## 25            2
-    ## 26            3
-    ## 27            4
-    ## 28            8
-    ## 29            8
-    ## 30            6
-    ## 31            9
-    ## 32            7
-    ## 33            9
-    ## 34            3
-    ## 35            1
-    ## 36            8
-    ## 37            9
-    ## 38            8
-    ## 39            7
-    ## 40            8
-    ## 41            9
-    ## 42            6
-    ## 43            7
-    ## 44            7
-    ## 45            7
-    ## 46            4
-    ## 47            7
-    ## 48            5
-    ## 49            6
+    ##    <chr>      <dbl>       <dbl>       <dbl>           <dbl>           <dbl>
+    ##  1 Con7        19.7        34.7          20               3               4
+    ##  2 Con7        27          42            19               8               0
+    ##  3 Con7        26          41.4          19               6               0
+    ##  4 Con7        28.5        44.1          19               5               1
+    ##  5 Con7        NA          NA            20               6               0
+    ##  6 Con7        NA          NA            20               6               0
+    ##  7 Con7        NA          NA            20               9               0
+    ##  8 Con8        NA          NA            20               9               1
+    ##  9 Con8        NA          NA            20               8               0
+    ## 10 Con8        28.5        NA            20               8               0
+    ## # ... with 39 more rows, and 1 more variable: pups_survive <dbl>
 
 ``` r
 select(litters_df, GROUP = group, litter_number)
 ```
 
-    ##    GROUP   litter_number
-    ## 1   Con7             #85
-    ## 2   Con7       #1/2/95/2
-    ## 3   Con7   #5/5/3/83/3-3
-    ## 4   Con7     #5/4/2/95/2
-    ## 5   Con7     #4/2/95/3-3
-    ## 6   Con7     #2/2/95/3-2
-    ## 7   Con7 #1/5/3/83/3-3/2
-    ## 8   Con8       #3/83/3-3
-    ## 9   Con8         #2/95/3
-    ## 10  Con8     #3/5/2/2/95
-    ## 11  Con8     #5/4/3/83/3
-    ## 12  Con8   #1/6/2/2/95-2
-    ## 13  Con8 #3/5/3/83/3-3-2
-    ## 14  Con8       #2/2/95/2
-    ## 15  Con8   #3/6/2/2/95-3
-    ## 16  Mod7             #59
-    ## 17  Mod7            #103
-    ## 18  Mod7       #1/82/3-2
-    ## 19  Mod7       #3/83/3-2
-    ## 20  Mod7       #2/95/2-2
-    ## 21  Mod7       #3/82/3-2
-    ## 22  Mod7       #4/2/95/2
-    ## 23  Mod7     #5/3/83/5-2
-    ## 24  Mod7      #8/110/3-2
-    ## 25  Mod7            #106
-    ## 26  Mod7           #94/2
-    ## 27  Mod7             #62
-    ## 28  Low7           #84/2
-    ## 29  Low7            #107
-    ## 30  Low7           #85/2
-    ## 31  Low7             #98
-    ## 32  Low7            #102
-    ## 33  Low7            #101
-    ## 34  Low7            #111
-    ## 35  Low7            #112
-    ## 36  Mod8             #97
-    ## 37  Mod8           #5/93
-    ## 38  Mod8         #5/93/2
-    ## 39  Mod8       #7/82-3-2
-    ## 40  Mod8      #7/110/3-2
-    ## 41  Mod8         #2/95/2
-    ## 42  Mod8           #82/4
-    ## 43  Low8             #53
-    ## 44  Low8             #79
-    ## 45  Low8            #100
-    ## 46  Low8           #4/84
-    ## 47  Low8            #108
-    ## 48  Low8             #99
-    ## 49  Low8            #110
+    ## # A tibble: 49 x 2
+    ##    GROUP litter_number  
+    ##    <chr> <chr>          
+    ##  1 Con7  #85            
+    ##  2 Con7  #1/2/95/2      
+    ##  3 Con7  #5/5/3/83/3-3  
+    ##  4 Con7  #5/4/2/95/2    
+    ##  5 Con7  #4/2/95/3-3    
+    ##  6 Con7  #2/2/95/3-2    
+    ##  7 Con7  #1/5/3/83/3-3/2
+    ##  8 Con8  #3/83/3-3      
+    ##  9 Con8  #2/95/3        
+    ## 10 Con8  #3/5/2/2/95    
+    ## # ... with 39 more rows
 
 ``` r
 rename(litters_df, GROUP = group)
 ```
 
-    ##    GROUP   litter_number gd0_weight gd18_weight gd_of_birth pups_born_alive
-    ## 1   Con7             #85       19.7        34.7          20               3
-    ## 2   Con7       #1/2/95/2       27.0        42.0          19               8
-    ## 3   Con7   #5/5/3/83/3-3       26.0        41.4          19               6
-    ## 4   Con7     #5/4/2/95/2       28.5        44.1          19               5
-    ## 5   Con7     #4/2/95/3-3         NA          NA          20               6
-    ## 6   Con7     #2/2/95/3-2         NA          NA          20               6
-    ## 7   Con7 #1/5/3/83/3-3/2         NA          NA          20               9
-    ## 8   Con8       #3/83/3-3         NA          NA          20               9
-    ## 9   Con8         #2/95/3         NA          NA          20               8
-    ## 10  Con8     #3/5/2/2/95       28.5          NA          20               8
-    ## 11  Con8     #5/4/3/83/3       28.0          NA          19               9
-    ## 12  Con8   #1/6/2/2/95-2         NA          NA          20               7
-    ## 13  Con8 #3/5/3/83/3-3-2         NA          NA          20               8
-    ## 14  Con8       #2/2/95/2         NA          NA          19               5
-    ## 15  Con8   #3/6/2/2/95-3         NA          NA          20               7
-    ## 16  Mod7             #59       17.0        33.4          19               8
-    ## 17  Mod7            #103       21.4        42.1          19               9
-    ## 18  Mod7       #1/82/3-2         NA          NA          19               6
-    ## 19  Mod7       #3/83/3-2         NA          NA          19               8
-    ## 20  Mod7       #2/95/2-2         NA          NA          20               7
-    ## 21  Mod7       #3/82/3-2       28.0        45.9          20               5
-    ## 22  Mod7       #4/2/95/2       23.5          NA          19               9
-    ## 23  Mod7     #5/3/83/5-2       22.6        37.0          19               5
-    ## 24  Mod7      #8/110/3-2         NA          NA          20               9
-    ## 25  Mod7            #106       21.7        37.8          20               5
-    ## 26  Mod7           #94/2       24.4        42.9          19               7
-    ## 27  Mod7             #62       19.5        35.9          19               7
-    ## 28  Low7           #84/2       24.3        40.8          20               8
-    ## 29  Low7            #107       22.6        42.4          20               9
-    ## 30  Low7           #85/2       22.2        38.5          20               8
-    ## 31  Low7             #98       23.8        43.8          20               9
-    ## 32  Low7            #102       22.6        43.3          20              11
-    ## 33  Low7            #101       23.8        42.7          20               9
-    ## 34  Low7            #111       25.5        44.6          20               3
-    ## 35  Low7            #112       23.9        40.5          19               6
-    ## 36  Mod8             #97       24.5        42.8          20               8
-    ## 37  Mod8           #5/93         NA        41.1          20              11
-    ## 38  Mod8         #5/93/2         NA          NA          19               8
-    ## 39  Mod8       #7/82-3-2       26.9        43.2          20               7
-    ## 40  Mod8      #7/110/3-2       27.5        46.0          19               8
-    ## 41  Mod8         #2/95/2       28.5        44.5          20               9
-    ## 42  Mod8           #82/4       33.4        52.7          20               8
-    ## 43  Low8             #53       21.8        37.2          20               8
-    ## 44  Low8             #79       25.4        43.8          19               8
-    ## 45  Low8            #100       20.0        39.2          20               8
-    ## 46  Low8           #4/84       21.8        35.2          20               4
-    ## 47  Low8            #108       25.6        47.5          20               8
-    ## 48  Low8             #99       23.5        39.0          20               6
-    ## 49  Low8            #110       25.5        42.7          20               7
-    ##    pups_dead_birth pups_survive
-    ## 1                4            3
-    ## 2                0            7
-    ## 3                0            5
-    ## 4                1            4
-    ## 5                0            6
-    ## 6                0            4
-    ## 7                0            9
-    ## 8                1            8
-    ## 9                0            8
-    ## 10               0            8
-    ## 11               0            8
-    ## 12               0            6
-    ## 13               0            8
-    ## 14               0            4
-    ## 15               0            7
-    ## 16               0            5
-    ## 17               1            9
-    ## 18               0            6
-    ## 19               0            8
-    ## 20               0            7
-    ## 21               0            5
-    ## 22               0            7
-    ## 23               0            5
-    ## 24               0            9
-    ## 25               0            2
-    ## 26               1            3
-    ## 27               2            4
-    ## 28               0            8
-    ## 29               0            8
-    ## 30               0            6
-    ## 31               0            9
-    ## 32               0            7
-    ## 33               0            9
-    ## 34               2            3
-    ## 35               1            1
-    ## 36               1            8
-    ## 37               0            9
-    ## 38               0            8
-    ## 39               0            7
-    ## 40               1            8
-    ## 41               0            9
-    ## 42               0            6
-    ## 43               1            7
-    ## 44               0            7
-    ## 45               0            7
-    ## 46               0            4
-    ## 47               0            7
-    ## 48               0            5
-    ## 49               0            6
+    ## # A tibble: 49 x 8
+    ##    GROUP litter_number   gd0_weight gd18_weight gd_of_birth pups_born_alive
+    ##    <chr> <chr>                <dbl>       <dbl>       <dbl>           <dbl>
+    ##  1 Con7  #85                   19.7        34.7          20               3
+    ##  2 Con7  #1/2/95/2             27          42            19               8
+    ##  3 Con7  #5/5/3/83/3-3         26          41.4          19               6
+    ##  4 Con7  #5/4/2/95/2           28.5        44.1          19               5
+    ##  5 Con7  #4/2/95/3-3           NA          NA            20               6
+    ##  6 Con7  #2/2/95/3-2           NA          NA            20               6
+    ##  7 Con7  #1/5/3/83/3-3/2       NA          NA            20               9
+    ##  8 Con8  #3/83/3-3             NA          NA            20               9
+    ##  9 Con8  #2/95/3               NA          NA            20               8
+    ## 10 Con8  #3/5/2/2/95           28.5        NA            20               8
+    ## # ... with 39 more rows, and 2 more variables: pups_dead_birth <dbl>,
+    ## #   pups_survive <dbl>
 
 ``` r
 # everything()-- keeps everything in the data, but listing litter_number first, relocating columns
 select(litters_df, litter_number, everything())
 ```
 
-    ##      litter_number group gd0_weight gd18_weight gd_of_birth pups_born_alive
-    ## 1              #85  Con7       19.7        34.7          20               3
-    ## 2        #1/2/95/2  Con7       27.0        42.0          19               8
-    ## 3    #5/5/3/83/3-3  Con7       26.0        41.4          19               6
-    ## 4      #5/4/2/95/2  Con7       28.5        44.1          19               5
-    ## 5      #4/2/95/3-3  Con7         NA          NA          20               6
-    ## 6      #2/2/95/3-2  Con7         NA          NA          20               6
-    ## 7  #1/5/3/83/3-3/2  Con7         NA          NA          20               9
-    ## 8        #3/83/3-3  Con8         NA          NA          20               9
-    ## 9          #2/95/3  Con8         NA          NA          20               8
-    ## 10     #3/5/2/2/95  Con8       28.5          NA          20               8
-    ## 11     #5/4/3/83/3  Con8       28.0          NA          19               9
-    ## 12   #1/6/2/2/95-2  Con8         NA          NA          20               7
-    ## 13 #3/5/3/83/3-3-2  Con8         NA          NA          20               8
-    ## 14       #2/2/95/2  Con8         NA          NA          19               5
-    ## 15   #3/6/2/2/95-3  Con8         NA          NA          20               7
-    ## 16             #59  Mod7       17.0        33.4          19               8
-    ## 17            #103  Mod7       21.4        42.1          19               9
-    ## 18       #1/82/3-2  Mod7         NA          NA          19               6
-    ## 19       #3/83/3-2  Mod7         NA          NA          19               8
-    ## 20       #2/95/2-2  Mod7         NA          NA          20               7
-    ## 21       #3/82/3-2  Mod7       28.0        45.9          20               5
-    ## 22       #4/2/95/2  Mod7       23.5          NA          19               9
-    ## 23     #5/3/83/5-2  Mod7       22.6        37.0          19               5
-    ## 24      #8/110/3-2  Mod7         NA          NA          20               9
-    ## 25            #106  Mod7       21.7        37.8          20               5
-    ## 26           #94/2  Mod7       24.4        42.9          19               7
-    ## 27             #62  Mod7       19.5        35.9          19               7
-    ## 28           #84/2  Low7       24.3        40.8          20               8
-    ## 29            #107  Low7       22.6        42.4          20               9
-    ## 30           #85/2  Low7       22.2        38.5          20               8
-    ## 31             #98  Low7       23.8        43.8          20               9
-    ## 32            #102  Low7       22.6        43.3          20              11
-    ## 33            #101  Low7       23.8        42.7          20               9
-    ## 34            #111  Low7       25.5        44.6          20               3
-    ## 35            #112  Low7       23.9        40.5          19               6
-    ## 36             #97  Mod8       24.5        42.8          20               8
-    ## 37           #5/93  Mod8         NA        41.1          20              11
-    ## 38         #5/93/2  Mod8         NA          NA          19               8
-    ## 39       #7/82-3-2  Mod8       26.9        43.2          20               7
-    ## 40      #7/110/3-2  Mod8       27.5        46.0          19               8
-    ## 41         #2/95/2  Mod8       28.5        44.5          20               9
-    ## 42           #82/4  Mod8       33.4        52.7          20               8
-    ## 43             #53  Low8       21.8        37.2          20               8
-    ## 44             #79  Low8       25.4        43.8          19               8
-    ## 45            #100  Low8       20.0        39.2          20               8
-    ## 46           #4/84  Low8       21.8        35.2          20               4
-    ## 47            #108  Low8       25.6        47.5          20               8
-    ## 48             #99  Low8       23.5        39.0          20               6
-    ## 49            #110  Low8       25.5        42.7          20               7
-    ##    pups_dead_birth pups_survive
-    ## 1                4            3
-    ## 2                0            7
-    ## 3                0            5
-    ## 4                1            4
-    ## 5                0            6
-    ## 6                0            4
-    ## 7                0            9
-    ## 8                1            8
-    ## 9                0            8
-    ## 10               0            8
-    ## 11               0            8
-    ## 12               0            6
-    ## 13               0            8
-    ## 14               0            4
-    ## 15               0            7
-    ## 16               0            5
-    ## 17               1            9
-    ## 18               0            6
-    ## 19               0            8
-    ## 20               0            7
-    ## 21               0            5
-    ## 22               0            7
-    ## 23               0            5
-    ## 24               0            9
-    ## 25               0            2
-    ## 26               1            3
-    ## 27               2            4
-    ## 28               0            8
-    ## 29               0            8
-    ## 30               0            6
-    ## 31               0            9
-    ## 32               0            7
-    ## 33               0            9
-    ## 34               2            3
-    ## 35               1            1
-    ## 36               1            8
-    ## 37               0            9
-    ## 38               0            8
-    ## 39               0            7
-    ## 40               1            8
-    ## 41               0            9
-    ## 42               0            6
-    ## 43               1            7
-    ## 44               0            7
-    ## 45               0            7
-    ## 46               0            4
-    ## 47               0            7
-    ## 48               0            5
-    ## 49               0            6
+    ## # A tibble: 49 x 8
+    ##    litter_number   group gd0_weight gd18_weight gd_of_birth pups_born_alive
+    ##    <chr>           <chr>      <dbl>       <dbl>       <dbl>           <dbl>
+    ##  1 #85             Con7        19.7        34.7          20               3
+    ##  2 #1/2/95/2       Con7        27          42            19               8
+    ##  3 #5/5/3/83/3-3   Con7        26          41.4          19               6
+    ##  4 #5/4/2/95/2     Con7        28.5        44.1          19               5
+    ##  5 #4/2/95/3-3     Con7        NA          NA            20               6
+    ##  6 #2/2/95/3-2     Con7        NA          NA            20               6
+    ##  7 #1/5/3/83/3-3/2 Con7        NA          NA            20               9
+    ##  8 #3/83/3-3       Con8        NA          NA            20               9
+    ##  9 #2/95/3         Con8        NA          NA            20               8
+    ## 10 #3/5/2/2/95     Con8        28.5        NA            20               8
+    ## # ... with 39 more rows, and 2 more variables: pups_dead_birth <dbl>,
+    ## #   pups_survive <dbl>
 
 ``` r
 relocate(litters_df, litter_number)
 ```
 
-    ##      litter_number group gd0_weight gd18_weight gd_of_birth pups_born_alive
-    ## 1              #85  Con7       19.7        34.7          20               3
-    ## 2        #1/2/95/2  Con7       27.0        42.0          19               8
-    ## 3    #5/5/3/83/3-3  Con7       26.0        41.4          19               6
-    ## 4      #5/4/2/95/2  Con7       28.5        44.1          19               5
-    ## 5      #4/2/95/3-3  Con7         NA          NA          20               6
-    ## 6      #2/2/95/3-2  Con7         NA          NA          20               6
-    ## 7  #1/5/3/83/3-3/2  Con7         NA          NA          20               9
-    ## 8        #3/83/3-3  Con8         NA          NA          20               9
-    ## 9          #2/95/3  Con8         NA          NA          20               8
-    ## 10     #3/5/2/2/95  Con8       28.5          NA          20               8
-    ## 11     #5/4/3/83/3  Con8       28.0          NA          19               9
-    ## 12   #1/6/2/2/95-2  Con8         NA          NA          20               7
-    ## 13 #3/5/3/83/3-3-2  Con8         NA          NA          20               8
-    ## 14       #2/2/95/2  Con8         NA          NA          19               5
-    ## 15   #3/6/2/2/95-3  Con8         NA          NA          20               7
-    ## 16             #59  Mod7       17.0        33.4          19               8
-    ## 17            #103  Mod7       21.4        42.1          19               9
-    ## 18       #1/82/3-2  Mod7         NA          NA          19               6
-    ## 19       #3/83/3-2  Mod7         NA          NA          19               8
-    ## 20       #2/95/2-2  Mod7         NA          NA          20               7
-    ## 21       #3/82/3-2  Mod7       28.0        45.9          20               5
-    ## 22       #4/2/95/2  Mod7       23.5          NA          19               9
-    ## 23     #5/3/83/5-2  Mod7       22.6        37.0          19               5
-    ## 24      #8/110/3-2  Mod7         NA          NA          20               9
-    ## 25            #106  Mod7       21.7        37.8          20               5
-    ## 26           #94/2  Mod7       24.4        42.9          19               7
-    ## 27             #62  Mod7       19.5        35.9          19               7
-    ## 28           #84/2  Low7       24.3        40.8          20               8
-    ## 29            #107  Low7       22.6        42.4          20               9
-    ## 30           #85/2  Low7       22.2        38.5          20               8
-    ## 31             #98  Low7       23.8        43.8          20               9
-    ## 32            #102  Low7       22.6        43.3          20              11
-    ## 33            #101  Low7       23.8        42.7          20               9
-    ## 34            #111  Low7       25.5        44.6          20               3
-    ## 35            #112  Low7       23.9        40.5          19               6
-    ## 36             #97  Mod8       24.5        42.8          20               8
-    ## 37           #5/93  Mod8         NA        41.1          20              11
-    ## 38         #5/93/2  Mod8         NA          NA          19               8
-    ## 39       #7/82-3-2  Mod8       26.9        43.2          20               7
-    ## 40      #7/110/3-2  Mod8       27.5        46.0          19               8
-    ## 41         #2/95/2  Mod8       28.5        44.5          20               9
-    ## 42           #82/4  Mod8       33.4        52.7          20               8
-    ## 43             #53  Low8       21.8        37.2          20               8
-    ## 44             #79  Low8       25.4        43.8          19               8
-    ## 45            #100  Low8       20.0        39.2          20               8
-    ## 46           #4/84  Low8       21.8        35.2          20               4
-    ## 47            #108  Low8       25.6        47.5          20               8
-    ## 48             #99  Low8       23.5        39.0          20               6
-    ## 49            #110  Low8       25.5        42.7          20               7
-    ##    pups_dead_birth pups_survive
-    ## 1                4            3
-    ## 2                0            7
-    ## 3                0            5
-    ## 4                1            4
-    ## 5                0            6
-    ## 6                0            4
-    ## 7                0            9
-    ## 8                1            8
-    ## 9                0            8
-    ## 10               0            8
-    ## 11               0            8
-    ## 12               0            6
-    ## 13               0            8
-    ## 14               0            4
-    ## 15               0            7
-    ## 16               0            5
-    ## 17               1            9
-    ## 18               0            6
-    ## 19               0            8
-    ## 20               0            7
-    ## 21               0            5
-    ## 22               0            7
-    ## 23               0            5
-    ## 24               0            9
-    ## 25               0            2
-    ## 26               1            3
-    ## 27               2            4
-    ## 28               0            8
-    ## 29               0            8
-    ## 30               0            6
-    ## 31               0            9
-    ## 32               0            7
-    ## 33               0            9
-    ## 34               2            3
-    ## 35               1            1
-    ## 36               1            8
-    ## 37               0            9
-    ## 38               0            8
-    ## 39               0            7
-    ## 40               1            8
-    ## 41               0            9
-    ## 42               0            6
-    ## 43               1            7
-    ## 44               0            7
-    ## 45               0            7
-    ## 46               0            4
-    ## 47               0            7
-    ## 48               0            5
-    ## 49               0            6
+    ## # A tibble: 49 x 8
+    ##    litter_number   group gd0_weight gd18_weight gd_of_birth pups_born_alive
+    ##    <chr>           <chr>      <dbl>       <dbl>       <dbl>           <dbl>
+    ##  1 #85             Con7        19.7        34.7          20               3
+    ##  2 #1/2/95/2       Con7        27          42            19               8
+    ##  3 #5/5/3/83/3-3   Con7        26          41.4          19               6
+    ##  4 #5/4/2/95/2     Con7        28.5        44.1          19               5
+    ##  5 #4/2/95/3-3     Con7        NA          NA            20               6
+    ##  6 #2/2/95/3-2     Con7        NA          NA            20               6
+    ##  7 #1/5/3/83/3-3/2 Con7        NA          NA            20               9
+    ##  8 #3/83/3-3       Con8        NA          NA            20               9
+    ##  9 #2/95/3         Con8        NA          NA            20               8
+    ## 10 #3/5/2/2/95     Con8        28.5        NA            20               8
+    ## # ... with 39 more rows, and 2 more variables: pups_dead_birth <dbl>,
+    ## #   pups_survive <dbl>
 
 ``` r
 select(pups_df, litter_number, sex, pd_ears)
 ```
 
-    ##       litter_number sex pd_ears
-    ## 1               #85   1       4
-    ## 2               #85   1       4
-    ## 3         #1/2/95/2   1       5
-    ## 4         #1/2/95/2   1       5
-    ## 5     #5/5/3/83/3-3   1       5
-    ## 6     #5/5/3/83/3-3   1       5
-    ## 7       #5/4/2/95/2   1      NA
-    ## 8       #4/2/95/3-3   1       4
-    ## 9       #4/2/95/3-3   1       4
-    ## 10      #2/2/95/3-2   1       4
-    ## 11  #1/5/3/83/3-3/2   1       4
-    ## 12  #1/5/3/83/3-3/2   1       4
-    ## 13  #1/5/3/83/3-3/2   1       4
-    ## 14  #1/5/3/83/3-3/2   1       4
-    ## 15  #1/5/3/83/3-3/2   1       4
-    ## 16              #85   2       4
-    ## 17        #1/2/95/2   2       4
-    ## 18        #1/2/95/2   2       4
-    ## 19        #1/2/95/2   2       5
-    ## 20        #1/2/95/2   2       5
-    ## 21        #1/2/95/2   2       5
-    ## 22    #5/5/3/83/3-3   2       5
-    ## 23    #5/5/3/83/3-3   2       5
-    ## 24    #5/5/3/83/3-3   2       5
-    ## 25      #5/4/2/95/2   2      NA
-    ## 26      #5/4/2/95/2   2      NA
-    ## 27      #5/4/2/95/2   2      NA
-    ## 28      #4/2/95/3-3   2       4
-    ## 29      #4/2/95/3-3   2       4
-    ## 30      #4/2/95/3-3   2       4
-    ## 31      #4/2/95/3-3   2       4
-    ## 32      #2/2/95/3-2   2       4
-    ## 33      #2/2/95/3-2   2       4
-    ## 34      #2/2/95/3-2   2       4
-    ## 35  #1/5/3/83/3-3/2   2       4
-    ## 36  #1/5/3/83/3-3/2   2       4
-    ## 37  #1/5/3/83/3-3/2   2       4
-    ## 38  #1/5/3/83/3-3/2   2       4
-    ## 39        #3/83/3-3   1       3
-    ## 40        #3/83/3-3   1       3
-    ## 41        #3/83/3-3   1       3
-    ## 42        #3/83/3-3   1       3
-    ## 43        #3/83/3-3   1       4
-    ## 44          #2/95/3   1       4
-    ## 45          #2/95/3   1       3
-    ## 46          #2/95/3   1       3
-    ## 47          #2/95/3   1       3
-    ## 48      #3/5/2/2/95   1       4
-    ## 49      #3/5/2/2/95   1       4
-    ## 50      #3/5/2/2/95   1       4
-    ## 51      #3/5/2/2/95   1       4
-    ## 52      #5/4/3/83/3   1       4
-    ## 53      #5/4/3/83/3   1       4
-    ## 54      #5/4/3/83/3   1       4
-    ## 55      #5/4/3/83/3   1       4
-    ## 56      #5/4/3/83/3   1       4
-    ## 57    #1/6/2/2/95-2   1       3
-    ## 58    #1/6/2/2/95-2   1       4
-    ## 59  #3/5/3/83/3-3-2   1       4
-    ## 60  #3/5/3/83/3-3-2   1       4
-    ## 61  #3/5/3/83/3-3-2   1       4
-    ## 62  #3/5/3/83/3-3-2   1       4
-    ## 63        #2/2/95/2   1       5
-    ## 64        #2/2/95/2   1       4
-    ## 65    #3/6/2/2/95-3   1       3
-    ## 66    #3/6/2/2/95-3   1       3
-    ## 67    #3/6/2/2/95-3   1       3
-    ## 68    #3/6/2/2/95-3   1       3
-    ## 69    #3/6/2/2/95-3   1       3
-    ## 70        #3/83/3-3   2       3
-    ## 71        #3/83/3-3   2       3
-    ## 72        #3/83/3-3   2       3
-    ## 73          #2/95/3   2       3
-    ## 74          #2/95/3   2       3
-    ## 75          #2/95/3   2       4
-    ## 76          #2/95/3   2       3
-    ## 77      #3/5/2/2/95   2       4
-    ## 78      #3/5/2/2/95   2       4
-    ## 79      #3/5/2/2/95   2       3
-    ## 80      #3/5/2/2/95   2       4
-    ## 81      #5/4/3/83/3   2       4
-    ## 82      #5/4/3/83/3   2       4
-    ## 83      #5/4/3/83/3   2       4
-    ## 84    #1/6/2/2/95-2   2       3
-    ## 85    #1/6/2/2/95-2   2       3
-    ## 86    #1/6/2/2/95-2   2       4
-    ## 87    #1/6/2/2/95-2   2       4
-    ## 88  #3/5/3/83/3-3-2   2       4
-    ## 89  #3/5/3/83/3-3-2   2       4
-    ## 90  #3/5/3/83/3-3-2   2       4
-    ## 91  #3/5/3/83/3-3-2   2       4
-    ## 92        #2/2/95/2   2       4
-    ## 93        #2/2/95/2   2       4
-    ## 94    #3/6/2/2/95-3   2       3
-    ## 95    #3/6/2/2/95-3   2       3
-    ## 96            #84/2   1       3
-    ## 97            #84/2   1       3
-    ## 98            #84/2   1       3
-    ## 99             #107   1       4
-    ## 100            #107   1       4
-    ## 101            #107   1       4
-    ## 102            #107   1       4
-    ## 103            #107   1       4
-    ## 104            #107   1       4
-    ## 105            #107   1       4
-    ## 106           #85/2   1       4
-    ## 107           #85/2   1       4
-    ## 108             #98   1       3
-    ## 109             #98   1       4
-    ## 110             #98   1       4
-    ## 111             #98   1       4
-    ## 112             #98   1       3
-    ## 113            #102   1       4
-    ## 114            #102   1       4
-    ## 115            #101   1       3
-    ## 116            #101   1       3
-    ## 117            #101   1       4
-    ## 118            #101   1       4
-    ## 119            #111   1       4
-    ## 120           #84/2   2       3
-    ## 121           #84/2   2       3
-    ## 122           #84/2   2       3
-    ## 123           #84/2   2       3
-    ## 124           #84/2   2       3
-    ## 125            #107   2       4
-    ## 126           #85/2   2       4
-    ## 127           #85/2   2       4
-    ## 128           #85/2   2       4
-    ## 129           #85/2   2       4
-    ## 130             #98   2       2
-    ## 131             #98   2       4
-    ## 132             #98   2       4
-    ## 133             #98   2       3
-    ## 134            #102   2       4
-    ## 135            #102   2       3
-    ## 136            #102   2       3
-    ## 137            #102   2       4
-    ## 138            #102   2       3
-    ## 139            #101   2       3
-    ## 140            #101   2       3
-    ## 141            #101   2       3
-    ## 142            #101   2       4
-    ## 143            #101   2       4
-    ## 144            #111   2       4
-    ## 145            #111   2       4
-    ## 146             #59   1       4
-    ## 147             #59   1       4
-    ## 148             #59   1       4
-    ## 149            #103   1       4
-    ## 150            #103   1       4
-    ## 151            #103   1       3
-    ## 152       #1/82/3-2   1       4
-    ## 153       #1/82/3-2   1       4
-    ## 154       #3/83/3-2   1       4
-    ## 155       #3/83/3-2   1       4
-    ## 156       #3/83/3-2   1       4
-    ## 157       #3/83/3-2   1       4
-    ## 158       #3/83/3-2   1       4
-    ## 159       #3/83/3-2   1       4
-    ## 160       #2/95/2-2   1       4
-    ## 161       #2/95/2-2   1       4
-    ## 162       #2/95/2-2   1       4
-    ## 163       #2/95/2-2   1       4
-    ## 164       #3/82/3-2   1       3
-    ## 165       #3/82/3-2   1       4
-    ## 166       #4/2/95/2   1       4
-    ## 167       #4/2/95/2   1       4
-    ## 168       #4/2/95/2   1       4
-    ## 169       #4/2/95/2   1       4
-    ## 170     #5/3/83/5-2   1       4
-    ## 171     #5/3/83/5-2   1       4
-    ## 172     #5/3/83/5-2   1       4
-    ## 173      #8/110/3-2   1       3
-    ## 174      #8/110/3-2   1       3
-    ## 175      #8/110/3-2   1       3
-    ## 176      #8/110/3-2   1       4
-    ## 177            #106   1       3
-    ## 178           #94/2   1      NA
-    ## 179             #62   1       5
-    ## 180             #62   1       5
-    ## 181             #62   1       5
-    ## 182             #59   2       4
-    ## 183             #59   2       4
-    ## 184            #103   2       3
-    ## 185            #103   2       3
-    ## 186            #103   2       3
-    ## 187            #103   2       3
-    ## 188            #103   2       3
-    ## 189            #103   2       4
-    ## 190       #1/82/3-2   2       4
-    ## 191       #1/82/3-2   2       4
-    ## 192       #1/82/3-2   2       5
-    ## 193       #1/82/3-2   2       4
-    ## 194       #3/83/3-2   2       4
-    ## 195       #3/83/3-2   2       4
-    ## 196       #2/95/2-2   2       4
-    ## 197       #2/95/2-2   2       4
-    ## 198       #2/95/2-2   2       4
-    ## 199       #3/82/3-2   2       4
-    ## 200       #3/82/3-2   2       3
-    ## 201       #3/82/3-2   2       3
-    ## 202       #4/2/95/2   2       4
-    ## 203       #4/2/95/2   2       4
-    ## 204       #4/2/95/2   2       4
-    ## 205     #5/3/83/3-2   2       3
-    ## 206     #5/3/83/3-2   2       3
-    ## 207      #8/110/3-2   2       3
-    ## 208      #8/110/3-2   2       3
-    ## 209      #8/110/3-2   2       4
-    ## 210      #8/110/3-2   2       4
-    ## 211      #8/110/3-2   2       4
-    ## 212            #106   2       3
-    ## 213           #94/2   2      NA
-    ## 214           #94/2   2      NA
-    ## 215             #62   2       5
-    ## 216             #53   1       4
-    ## 217             #53   1       3
-    ## 218             #53   1       4
-    ## 219             #53   1       3
-    ## 220             #53   1       4
-    ## 221             #79   1       4
-    ## 222             #79   1       4
-    ## 223             #79   1       4
-    ## 224             #79   1       4
-    ## 225             #79   1       4
-    ## 226            #100   1       3
-    ## 227            #100   1       3
-    ## 228           #4/84   1       3
-    ## 229           #4/84   1       3
-    ## 230           #4/84   1       4
-    ## 231            #108   1       3
-    ## 232            #108   1       3
-    ## 233            #108   1       3
-    ## 234            #108   1       3
-    ## 235             #99   1      NA
-    ## 236             #99   1      NA
-    ## 237             #99   1      NA
-    ## 238             #99   1      NA
-    ## 239            #110   1      NA
-    ## 240             #53   2       3
-    ## 241             #53   2       4
-    ## 242             #79   2       4
-    ## 243             #79   2       4
-    ## 244            #100   2       4
-    ## 245            #100   2       3
-    ## 246            #100   2       3
-    ## 247            #100   2       3
-    ## 248            #100   2       4
-    ## 249           #4/84   2       3
-    ## 250            #108   2       3
-    ## 251            #108   2       3
-    ## 252            #108   2       3
-    ## 253             #99   2      NA
-    ## 254            #110   2      NA
-    ## 255            #110   2      NA
-    ## 256            #110   2      NA
-    ## 257            #110   2      NA
-    ## 258            #110   2      NA
-    ## 259             #97   1       3
-    ## 260             #97   1       3
-    ## 261             #97   1       3
-    ## 262             #97   1       3
-    ## 263             #97   1       3
-    ## 264             #97   1       3
-    ## 265           #5/93   1       3
-    ## 266           #5/93   1       3
-    ## 267           #5/93   1       3
-    ## 268         #5/93/2   1       4
-    ## 269       #7/82/3-2   1       3
-    ## 270       #7/82/3-2   1       4
-    ## 271       #7/82/3-2   1       3
-    ## 272      #7/110/3-2   1       3
-    ## 273      #7/110/3-2   1       3
-    ## 274      #7/110/3-2   1       4
-    ## 275      #7/110/3-2   1       3
-    ## 276      #7/110/3-2   1       3
-    ## 277      #7/110/3-2   1       3
-    ## 278         #2/95/2   1       4
-    ## 279         #2/95/2   1       4
-    ## 280         #2/95/2   1       4
-    ## 281           #82/4   1       4
-    ## 282           #82/4   1       3
-    ## 283           #82/4   1       4
-    ## 284             #97   2       3
-    ## 285             #97   2       3
-    ## 286           #5/93   2       4
-    ## 287           #5/93   2       3
-    ## 288           #5/93   2       4
-    ## 289           #5/93   2       3
-    ## 290           #5/93   2       3
-    ## 291           #5/93   2       3
-    ## 292         #5/93/2   2       4
-    ## 293         #5/93/2   2       5
-    ## 294         #5/93/2   2       4
-    ## 295         #5/93/2   2       5
-    ## 296         #5/93/2   2       4
-    ## 297         #5/93/2   2       4
-    ## 298         #5/93/2   2       5
-    ## 299       #7/82/3-2   2       3
-    ## 300       #7/82/3-2   2       3
-    ## 301       #7/82/3-2   2       3
-    ## 302       #7/82/3-2   2       3
-    ## 303      #7/110/3-2   2       4
-    ## 304      #7/110/3-2   2       4
-    ## 305         #2/95/2   2       4
-    ## 306         #2/95/2   2       4
-    ## 307         #2/95/2   2       4
-    ## 308         #2/95/2   2       4
-    ## 309         #2/95/2   2       3
-    ## 310         #2/95/2   2       3
-    ## 311           #82/4   2       4
-    ## 312           #82/4   2       3
-    ## 313           #82/4   2       3
+    ## # A tibble: 313 x 3
+    ##    litter_number   sex pd_ears
+    ##    <chr>         <dbl>   <dbl>
+    ##  1 #85               1       4
+    ##  2 #85               1       4
+    ##  3 #1/2/95/2         1       5
+    ##  4 #1/2/95/2         1       5
+    ##  5 #5/5/3/83/3-3     1       5
+    ##  6 #5/5/3/83/3-3     1       5
+    ##  7 #5/4/2/95/2       1      NA
+    ##  8 #4/2/95/3-3       1       4
+    ##  9 #4/2/95/3-3       1       4
+    ## 10 #2/2/95/3-2       1       4
+    ## # ... with 303 more rows
 
 ``` r
 select(litters_df, group)
 ```
 
+    ## # A tibble: 49 x 1
     ##    group
-    ## 1   Con7
-    ## 2   Con7
-    ## 3   Con7
-    ## 4   Con7
-    ## 5   Con7
-    ## 6   Con7
-    ## 7   Con7
-    ## 8   Con8
-    ## 9   Con8
-    ## 10  Con8
-    ## 11  Con8
-    ## 12  Con8
-    ## 13  Con8
-    ## 14  Con8
-    ## 15  Con8
-    ## 16  Mod7
-    ## 17  Mod7
-    ## 18  Mod7
-    ## 19  Mod7
-    ## 20  Mod7
-    ## 21  Mod7
-    ## 22  Mod7
-    ## 23  Mod7
-    ## 24  Mod7
-    ## 25  Mod7
-    ## 26  Mod7
-    ## 27  Mod7
-    ## 28  Low7
-    ## 29  Low7
-    ## 30  Low7
-    ## 31  Low7
-    ## 32  Low7
-    ## 33  Low7
-    ## 34  Low7
-    ## 35  Low7
-    ## 36  Mod8
-    ## 37  Mod8
-    ## 38  Mod8
-    ## 39  Mod8
-    ## 40  Mod8
-    ## 41  Mod8
-    ## 42  Mod8
-    ## 43  Low8
-    ## 44  Low8
-    ## 45  Low8
-    ## 46  Low8
-    ## 47  Low8
-    ## 48  Low8
-    ## 49  Low8
+    ##    <chr>
+    ##  1 Con7 
+    ##  2 Con7 
+    ##  3 Con7 
+    ##  4 Con7 
+    ##  5 Con7 
+    ##  6 Con7 
+    ##  7 Con7 
+    ##  8 Con8 
+    ##  9 Con8 
+    ## 10 Con8 
+    ## # ... with 39 more rows
 
 ``` r
 # pull(litters_df, group)
@@ -1118,583 +289,195 @@ Let’s get rid of rows …
 filter(litters_df, gd_of_birth == 20)
 ```
 
-    ##    group   litter_number gd0_weight gd18_weight gd_of_birth pups_born_alive
-    ## 1   Con7             #85       19.7        34.7          20               3
-    ## 2   Con7     #4/2/95/3-3         NA          NA          20               6
-    ## 3   Con7     #2/2/95/3-2         NA          NA          20               6
-    ## 4   Con7 #1/5/3/83/3-3/2         NA          NA          20               9
-    ## 5   Con8       #3/83/3-3         NA          NA          20               9
-    ## 6   Con8         #2/95/3         NA          NA          20               8
-    ## 7   Con8     #3/5/2/2/95       28.5          NA          20               8
-    ## 8   Con8   #1/6/2/2/95-2         NA          NA          20               7
-    ## 9   Con8 #3/5/3/83/3-3-2         NA          NA          20               8
-    ## 10  Con8   #3/6/2/2/95-3         NA          NA          20               7
-    ## 11  Mod7       #2/95/2-2         NA          NA          20               7
-    ## 12  Mod7       #3/82/3-2       28.0        45.9          20               5
-    ## 13  Mod7      #8/110/3-2         NA          NA          20               9
-    ## 14  Mod7            #106       21.7        37.8          20               5
-    ## 15  Low7           #84/2       24.3        40.8          20               8
-    ## 16  Low7            #107       22.6        42.4          20               9
-    ## 17  Low7           #85/2       22.2        38.5          20               8
-    ## 18  Low7             #98       23.8        43.8          20               9
-    ## 19  Low7            #102       22.6        43.3          20              11
-    ## 20  Low7            #101       23.8        42.7          20               9
-    ## 21  Low7            #111       25.5        44.6          20               3
-    ## 22  Mod8             #97       24.5        42.8          20               8
-    ## 23  Mod8           #5/93         NA        41.1          20              11
-    ## 24  Mod8       #7/82-3-2       26.9        43.2          20               7
-    ## 25  Mod8         #2/95/2       28.5        44.5          20               9
-    ## 26  Mod8           #82/4       33.4        52.7          20               8
-    ## 27  Low8             #53       21.8        37.2          20               8
-    ## 28  Low8            #100       20.0        39.2          20               8
-    ## 29  Low8           #4/84       21.8        35.2          20               4
-    ## 30  Low8            #108       25.6        47.5          20               8
-    ## 31  Low8             #99       23.5        39.0          20               6
-    ## 32  Low8            #110       25.5        42.7          20               7
-    ##    pups_dead_birth pups_survive
-    ## 1                4            3
-    ## 2                0            6
-    ## 3                0            4
-    ## 4                0            9
-    ## 5                1            8
-    ## 6                0            8
-    ## 7                0            8
-    ## 8                0            6
-    ## 9                0            8
-    ## 10               0            7
-    ## 11               0            7
-    ## 12               0            5
-    ## 13               0            9
-    ## 14               0            2
-    ## 15               0            8
-    ## 16               0            8
-    ## 17               0            6
-    ## 18               0            9
-    ## 19               0            7
-    ## 20               0            9
-    ## 21               2            3
-    ## 22               1            8
-    ## 23               0            9
-    ## 24               0            7
-    ## 25               0            9
-    ## 26               0            6
-    ## 27               1            7
-    ## 28               0            7
-    ## 29               0            4
-    ## 30               0            7
-    ## 31               0            5
-    ## 32               0            6
+    ## # A tibble: 32 x 8
+    ##    group litter_number   gd0_weight gd18_weight gd_of_birth pups_born_alive
+    ##    <chr> <chr>                <dbl>       <dbl>       <dbl>           <dbl>
+    ##  1 Con7  #85                   19.7        34.7          20               3
+    ##  2 Con7  #4/2/95/3-3           NA          NA            20               6
+    ##  3 Con7  #2/2/95/3-2           NA          NA            20               6
+    ##  4 Con7  #1/5/3/83/3-3/2       NA          NA            20               9
+    ##  5 Con8  #3/83/3-3             NA          NA            20               9
+    ##  6 Con8  #2/95/3               NA          NA            20               8
+    ##  7 Con8  #3/5/2/2/95           28.5        NA            20               8
+    ##  8 Con8  #1/6/2/2/95-2         NA          NA            20               7
+    ##  9 Con8  #3/5/3/83/3-3-2       NA          NA            20               8
+    ## 10 Con8  #3/6/2/2/95-3         NA          NA            20               7
+    ## # ... with 22 more rows, and 2 more variables: pups_dead_birth <dbl>,
+    ## #   pups_survive <dbl>
 
 ``` r
 filter(litters_df, group == "Con7")
 ```
 
-    ##   group   litter_number gd0_weight gd18_weight gd_of_birth pups_born_alive
-    ## 1  Con7             #85       19.7        34.7          20               3
-    ## 2  Con7       #1/2/95/2       27.0        42.0          19               8
-    ## 3  Con7   #5/5/3/83/3-3       26.0        41.4          19               6
-    ## 4  Con7     #5/4/2/95/2       28.5        44.1          19               5
-    ## 5  Con7     #4/2/95/3-3         NA          NA          20               6
-    ## 6  Con7     #2/2/95/3-2         NA          NA          20               6
-    ## 7  Con7 #1/5/3/83/3-3/2         NA          NA          20               9
-    ##   pups_dead_birth pups_survive
-    ## 1               4            3
-    ## 2               0            7
-    ## 3               0            5
-    ## 4               1            4
-    ## 5               0            6
-    ## 6               0            4
-    ## 7               0            9
+    ## # A tibble: 7 x 8
+    ##   group litter_number   gd0_weight gd18_weight gd_of_birth pups_born_alive
+    ##   <chr> <chr>                <dbl>       <dbl>       <dbl>           <dbl>
+    ## 1 Con7  #85                   19.7        34.7          20               3
+    ## 2 Con7  #1/2/95/2             27          42            19               8
+    ## 3 Con7  #5/5/3/83/3-3         26          41.4          19               6
+    ## 4 Con7  #5/4/2/95/2           28.5        44.1          19               5
+    ## 5 Con7  #4/2/95/3-3           NA          NA            20               6
+    ## 6 Con7  #2/2/95/3-2           NA          NA            20               6
+    ## 7 Con7  #1/5/3/83/3-3/2       NA          NA            20               9
+    ## # ... with 2 more variables: pups_dead_birth <dbl>, pups_survive <dbl>
 
 ``` r
 filter(litters_df, gd0_weight < 23)
 ```
 
+    ## # A tibble: 12 x 8
     ##    group litter_number gd0_weight gd18_weight gd_of_birth pups_born_alive
-    ## 1   Con7           #85       19.7        34.7          20               3
-    ## 2   Mod7           #59       17.0        33.4          19               8
-    ## 3   Mod7          #103       21.4        42.1          19               9
-    ## 4   Mod7   #5/3/83/5-2       22.6        37.0          19               5
-    ## 5   Mod7          #106       21.7        37.8          20               5
-    ## 6   Mod7           #62       19.5        35.9          19               7
-    ## 7   Low7          #107       22.6        42.4          20               9
-    ## 8   Low7         #85/2       22.2        38.5          20               8
-    ## 9   Low7          #102       22.6        43.3          20              11
-    ## 10  Low8           #53       21.8        37.2          20               8
-    ## 11  Low8          #100       20.0        39.2          20               8
-    ## 12  Low8         #4/84       21.8        35.2          20               4
-    ##    pups_dead_birth pups_survive
-    ## 1                4            3
-    ## 2                0            5
-    ## 3                1            9
-    ## 4                0            5
-    ## 5                0            2
-    ## 6                2            4
-    ## 7                0            8
-    ## 8                0            6
-    ## 9                0            7
-    ## 10               1            7
-    ## 11               0            7
-    ## 12               0            4
+    ##    <chr> <chr>              <dbl>       <dbl>       <dbl>           <dbl>
+    ##  1 Con7  #85                 19.7        34.7          20               3
+    ##  2 Mod7  #59                 17          33.4          19               8
+    ##  3 Mod7  #103                21.4        42.1          19               9
+    ##  4 Mod7  #5/3/83/5-2         22.6        37            19               5
+    ##  5 Mod7  #106                21.7        37.8          20               5
+    ##  6 Mod7  #62                 19.5        35.9          19               7
+    ##  7 Low7  #107                22.6        42.4          20               9
+    ##  8 Low7  #85/2               22.2        38.5          20               8
+    ##  9 Low7  #102                22.6        43.3          20              11
+    ## 10 Low8  #53                 21.8        37.2          20               8
+    ## 11 Low8  #100                20          39.2          20               8
+    ## 12 Low8  #4/84               21.8        35.2          20               4
+    ## # ... with 2 more variables: pups_dead_birth <dbl>, pups_survive <dbl>
 
 ``` r
 filter(litters_df, pups_survive != 4)
 ```
 
-    ##    group   litter_number gd0_weight gd18_weight gd_of_birth pups_born_alive
-    ## 1   Con7             #85       19.7        34.7          20               3
-    ## 2   Con7       #1/2/95/2       27.0        42.0          19               8
-    ## 3   Con7   #5/5/3/83/3-3       26.0        41.4          19               6
-    ## 4   Con7     #4/2/95/3-3         NA          NA          20               6
-    ## 5   Con7 #1/5/3/83/3-3/2         NA          NA          20               9
-    ## 6   Con8       #3/83/3-3         NA          NA          20               9
-    ## 7   Con8         #2/95/3         NA          NA          20               8
-    ## 8   Con8     #3/5/2/2/95       28.5          NA          20               8
-    ## 9   Con8     #5/4/3/83/3       28.0          NA          19               9
-    ## 10  Con8   #1/6/2/2/95-2         NA          NA          20               7
-    ## 11  Con8 #3/5/3/83/3-3-2         NA          NA          20               8
-    ## 12  Con8   #3/6/2/2/95-3         NA          NA          20               7
-    ## 13  Mod7             #59       17.0        33.4          19               8
-    ## 14  Mod7            #103       21.4        42.1          19               9
-    ## 15  Mod7       #1/82/3-2         NA          NA          19               6
-    ## 16  Mod7       #3/83/3-2         NA          NA          19               8
-    ## 17  Mod7       #2/95/2-2         NA          NA          20               7
-    ## 18  Mod7       #3/82/3-2       28.0        45.9          20               5
-    ## 19  Mod7       #4/2/95/2       23.5          NA          19               9
-    ## 20  Mod7     #5/3/83/5-2       22.6        37.0          19               5
-    ## 21  Mod7      #8/110/3-2         NA          NA          20               9
-    ## 22  Mod7            #106       21.7        37.8          20               5
-    ## 23  Mod7           #94/2       24.4        42.9          19               7
-    ## 24  Low7           #84/2       24.3        40.8          20               8
-    ## 25  Low7            #107       22.6        42.4          20               9
-    ## 26  Low7           #85/2       22.2        38.5          20               8
-    ## 27  Low7             #98       23.8        43.8          20               9
-    ## 28  Low7            #102       22.6        43.3          20              11
-    ## 29  Low7            #101       23.8        42.7          20               9
-    ## 30  Low7            #111       25.5        44.6          20               3
-    ## 31  Low7            #112       23.9        40.5          19               6
-    ## 32  Mod8             #97       24.5        42.8          20               8
-    ## 33  Mod8           #5/93         NA        41.1          20              11
-    ## 34  Mod8         #5/93/2         NA          NA          19               8
-    ## 35  Mod8       #7/82-3-2       26.9        43.2          20               7
-    ## 36  Mod8      #7/110/3-2       27.5        46.0          19               8
-    ## 37  Mod8         #2/95/2       28.5        44.5          20               9
-    ## 38  Mod8           #82/4       33.4        52.7          20               8
-    ## 39  Low8             #53       21.8        37.2          20               8
-    ## 40  Low8             #79       25.4        43.8          19               8
-    ## 41  Low8            #100       20.0        39.2          20               8
-    ## 42  Low8            #108       25.6        47.5          20               8
-    ## 43  Low8             #99       23.5        39.0          20               6
-    ## 44  Low8            #110       25.5        42.7          20               7
-    ##    pups_dead_birth pups_survive
-    ## 1                4            3
-    ## 2                0            7
-    ## 3                0            5
-    ## 4                0            6
-    ## 5                0            9
-    ## 6                1            8
-    ## 7                0            8
-    ## 8                0            8
-    ## 9                0            8
-    ## 10               0            6
-    ## 11               0            8
-    ## 12               0            7
-    ## 13               0            5
-    ## 14               1            9
-    ## 15               0            6
-    ## 16               0            8
-    ## 17               0            7
-    ## 18               0            5
-    ## 19               0            7
-    ## 20               0            5
-    ## 21               0            9
-    ## 22               0            2
-    ## 23               1            3
-    ## 24               0            8
-    ## 25               0            8
-    ## 26               0            6
-    ## 27               0            9
-    ## 28               0            7
-    ## 29               0            9
-    ## 30               2            3
-    ## 31               1            1
-    ## 32               1            8
-    ## 33               0            9
-    ## 34               0            8
-    ## 35               0            7
-    ## 36               1            8
-    ## 37               0            9
-    ## 38               0            6
-    ## 39               1            7
-    ## 40               0            7
-    ## 41               0            7
-    ## 42               0            7
-    ## 43               0            5
-    ## 44               0            6
+    ## # A tibble: 44 x 8
+    ##    group litter_number   gd0_weight gd18_weight gd_of_birth pups_born_alive
+    ##    <chr> <chr>                <dbl>       <dbl>       <dbl>           <dbl>
+    ##  1 Con7  #85                   19.7        34.7          20               3
+    ##  2 Con7  #1/2/95/2             27          42            19               8
+    ##  3 Con7  #5/5/3/83/3-3         26          41.4          19               6
+    ##  4 Con7  #4/2/95/3-3           NA          NA            20               6
+    ##  5 Con7  #1/5/3/83/3-3/2       NA          NA            20               9
+    ##  6 Con8  #3/83/3-3             NA          NA            20               9
+    ##  7 Con8  #2/95/3               NA          NA            20               8
+    ##  8 Con8  #3/5/2/2/95           28.5        NA            20               8
+    ##  9 Con8  #5/4/3/83/3           28          NA            19               9
+    ## 10 Con8  #1/6/2/2/95-2         NA          NA            20               7
+    ## # ... with 34 more rows, and 2 more variables: pups_dead_birth <dbl>,
+    ## #   pups_survive <dbl>
 
 ``` r
 filter(litters_df, !(group == "Con7"))
 ```
 
-    ##    group   litter_number gd0_weight gd18_weight gd_of_birth pups_born_alive
-    ## 1   Con8       #3/83/3-3         NA          NA          20               9
-    ## 2   Con8         #2/95/3         NA          NA          20               8
-    ## 3   Con8     #3/5/2/2/95       28.5          NA          20               8
-    ## 4   Con8     #5/4/3/83/3       28.0          NA          19               9
-    ## 5   Con8   #1/6/2/2/95-2         NA          NA          20               7
-    ## 6   Con8 #3/5/3/83/3-3-2         NA          NA          20               8
-    ## 7   Con8       #2/2/95/2         NA          NA          19               5
-    ## 8   Con8   #3/6/2/2/95-3         NA          NA          20               7
-    ## 9   Mod7             #59       17.0        33.4          19               8
-    ## 10  Mod7            #103       21.4        42.1          19               9
-    ## 11  Mod7       #1/82/3-2         NA          NA          19               6
-    ## 12  Mod7       #3/83/3-2         NA          NA          19               8
-    ## 13  Mod7       #2/95/2-2         NA          NA          20               7
-    ## 14  Mod7       #3/82/3-2       28.0        45.9          20               5
-    ## 15  Mod7       #4/2/95/2       23.5          NA          19               9
-    ## 16  Mod7     #5/3/83/5-2       22.6        37.0          19               5
-    ## 17  Mod7      #8/110/3-2         NA          NA          20               9
-    ## 18  Mod7            #106       21.7        37.8          20               5
-    ## 19  Mod7           #94/2       24.4        42.9          19               7
-    ## 20  Mod7             #62       19.5        35.9          19               7
-    ## 21  Low7           #84/2       24.3        40.8          20               8
-    ## 22  Low7            #107       22.6        42.4          20               9
-    ## 23  Low7           #85/2       22.2        38.5          20               8
-    ## 24  Low7             #98       23.8        43.8          20               9
-    ## 25  Low7            #102       22.6        43.3          20              11
-    ## 26  Low7            #101       23.8        42.7          20               9
-    ## 27  Low7            #111       25.5        44.6          20               3
-    ## 28  Low7            #112       23.9        40.5          19               6
-    ## 29  Mod8             #97       24.5        42.8          20               8
-    ## 30  Mod8           #5/93         NA        41.1          20              11
-    ## 31  Mod8         #5/93/2         NA          NA          19               8
-    ## 32  Mod8       #7/82-3-2       26.9        43.2          20               7
-    ## 33  Mod8      #7/110/3-2       27.5        46.0          19               8
-    ## 34  Mod8         #2/95/2       28.5        44.5          20               9
-    ## 35  Mod8           #82/4       33.4        52.7          20               8
-    ## 36  Low8             #53       21.8        37.2          20               8
-    ## 37  Low8             #79       25.4        43.8          19               8
-    ## 38  Low8            #100       20.0        39.2          20               8
-    ## 39  Low8           #4/84       21.8        35.2          20               4
-    ## 40  Low8            #108       25.6        47.5          20               8
-    ## 41  Low8             #99       23.5        39.0          20               6
-    ## 42  Low8            #110       25.5        42.7          20               7
-    ##    pups_dead_birth pups_survive
-    ## 1                1            8
-    ## 2                0            8
-    ## 3                0            8
-    ## 4                0            8
-    ## 5                0            6
-    ## 6                0            8
-    ## 7                0            4
-    ## 8                0            7
-    ## 9                0            5
-    ## 10               1            9
-    ## 11               0            6
-    ## 12               0            8
-    ## 13               0            7
-    ## 14               0            5
-    ## 15               0            7
-    ## 16               0            5
-    ## 17               0            9
-    ## 18               0            2
-    ## 19               1            3
-    ## 20               2            4
-    ## 21               0            8
-    ## 22               0            8
-    ## 23               0            6
-    ## 24               0            9
-    ## 25               0            7
-    ## 26               0            9
-    ## 27               2            3
-    ## 28               1            1
-    ## 29               1            8
-    ## 30               0            9
-    ## 31               0            8
-    ## 32               0            7
-    ## 33               1            8
-    ## 34               0            9
-    ## 35               0            6
-    ## 36               1            7
-    ## 37               0            7
-    ## 38               0            7
-    ## 39               0            4
-    ## 40               0            7
-    ## 41               0            5
-    ## 42               0            6
+    ## # A tibble: 42 x 8
+    ##    group litter_number   gd0_weight gd18_weight gd_of_birth pups_born_alive
+    ##    <chr> <chr>                <dbl>       <dbl>       <dbl>           <dbl>
+    ##  1 Con8  #3/83/3-3             NA          NA            20               9
+    ##  2 Con8  #2/95/3               NA          NA            20               8
+    ##  3 Con8  #3/5/2/2/95           28.5        NA            20               8
+    ##  4 Con8  #5/4/3/83/3           28          NA            19               9
+    ##  5 Con8  #1/6/2/2/95-2         NA          NA            20               7
+    ##  6 Con8  #3/5/3/83/3-3-2       NA          NA            20               8
+    ##  7 Con8  #2/2/95/2             NA          NA            19               5
+    ##  8 Con8  #3/6/2/2/95-3         NA          NA            20               7
+    ##  9 Mod7  #59                   17          33.4          19               8
+    ## 10 Mod7  #103                  21.4        42.1          19               9
+    ## # ... with 32 more rows, and 2 more variables: pups_dead_birth <dbl>,
+    ## #   pups_survive <dbl>
 
 ``` r
 filter(litters_df, group %in% c("Con7", "Con8"))
 ```
 
-    ##    group   litter_number gd0_weight gd18_weight gd_of_birth pups_born_alive
-    ## 1   Con7             #85       19.7        34.7          20               3
-    ## 2   Con7       #1/2/95/2       27.0        42.0          19               8
-    ## 3   Con7   #5/5/3/83/3-3       26.0        41.4          19               6
-    ## 4   Con7     #5/4/2/95/2       28.5        44.1          19               5
-    ## 5   Con7     #4/2/95/3-3         NA          NA          20               6
-    ## 6   Con7     #2/2/95/3-2         NA          NA          20               6
-    ## 7   Con7 #1/5/3/83/3-3/2         NA          NA          20               9
-    ## 8   Con8       #3/83/3-3         NA          NA          20               9
-    ## 9   Con8         #2/95/3         NA          NA          20               8
-    ## 10  Con8     #3/5/2/2/95       28.5          NA          20               8
-    ## 11  Con8     #5/4/3/83/3       28.0          NA          19               9
-    ## 12  Con8   #1/6/2/2/95-2         NA          NA          20               7
-    ## 13  Con8 #3/5/3/83/3-3-2         NA          NA          20               8
-    ## 14  Con8       #2/2/95/2         NA          NA          19               5
-    ## 15  Con8   #3/6/2/2/95-3         NA          NA          20               7
-    ##    pups_dead_birth pups_survive
-    ## 1                4            3
-    ## 2                0            7
-    ## 3                0            5
-    ## 4                1            4
-    ## 5                0            6
-    ## 6                0            4
-    ## 7                0            9
-    ## 8                1            8
-    ## 9                0            8
-    ## 10               0            8
-    ## 11               0            8
-    ## 12               0            6
-    ## 13               0            8
-    ## 14               0            4
-    ## 15               0            7
+    ## # A tibble: 15 x 8
+    ##    group litter_number   gd0_weight gd18_weight gd_of_birth pups_born_alive
+    ##    <chr> <chr>                <dbl>       <dbl>       <dbl>           <dbl>
+    ##  1 Con7  #85                   19.7        34.7          20               3
+    ##  2 Con7  #1/2/95/2             27          42            19               8
+    ##  3 Con7  #5/5/3/83/3-3         26          41.4          19               6
+    ##  4 Con7  #5/4/2/95/2           28.5        44.1          19               5
+    ##  5 Con7  #4/2/95/3-3           NA          NA            20               6
+    ##  6 Con7  #2/2/95/3-2           NA          NA            20               6
+    ##  7 Con7  #1/5/3/83/3-3/2       NA          NA            20               9
+    ##  8 Con8  #3/83/3-3             NA          NA            20               9
+    ##  9 Con8  #2/95/3               NA          NA            20               8
+    ## 10 Con8  #3/5/2/2/95           28.5        NA            20               8
+    ## 11 Con8  #5/4/3/83/3           28          NA            19               9
+    ## 12 Con8  #1/6/2/2/95-2         NA          NA            20               7
+    ## 13 Con8  #3/5/3/83/3-3-2       NA          NA            20               8
+    ## 14 Con8  #2/2/95/2             NA          NA            19               5
+    ## 15 Con8  #3/6/2/2/95-3         NA          NA            20               7
+    ## # ... with 2 more variables: pups_dead_birth <dbl>, pups_survive <dbl>
 
 ``` r
 filter(litters_df, group == "Con7", gd_of_birth == 20)
 ```
 
-    ##   group   litter_number gd0_weight gd18_weight gd_of_birth pups_born_alive
-    ## 1  Con7             #85       19.7        34.7          20               3
-    ## 2  Con7     #4/2/95/3-3         NA          NA          20               6
-    ## 3  Con7     #2/2/95/3-2         NA          NA          20               6
-    ## 4  Con7 #1/5/3/83/3-3/2         NA          NA          20               9
-    ##   pups_dead_birth pups_survive
-    ## 1               4            3
-    ## 2               0            6
-    ## 3               0            4
-    ## 4               0            9
+    ## # A tibble: 4 x 8
+    ##   group litter_number   gd0_weight gd18_weight gd_of_birth pups_born_alive
+    ##   <chr> <chr>                <dbl>       <dbl>       <dbl>           <dbl>
+    ## 1 Con7  #85                   19.7        34.7          20               3
+    ## 2 Con7  #4/2/95/3-3           NA          NA            20               6
+    ## 3 Con7  #2/2/95/3-2           NA          NA            20               6
+    ## 4 Con7  #1/5/3/83/3-3/2       NA          NA            20               9
+    ## # ... with 2 more variables: pups_dead_birth <dbl>, pups_survive <dbl>
 
 ``` r
 filter(litters_df, group == "Con7" | gd_of_birth == 20)
 ```
 
-    ##    group   litter_number gd0_weight gd18_weight gd_of_birth pups_born_alive
-    ## 1   Con7             #85       19.7        34.7          20               3
-    ## 2   Con7       #1/2/95/2       27.0        42.0          19               8
-    ## 3   Con7   #5/5/3/83/3-3       26.0        41.4          19               6
-    ## 4   Con7     #5/4/2/95/2       28.5        44.1          19               5
-    ## 5   Con7     #4/2/95/3-3         NA          NA          20               6
-    ## 6   Con7     #2/2/95/3-2         NA          NA          20               6
-    ## 7   Con7 #1/5/3/83/3-3/2         NA          NA          20               9
-    ## 8   Con8       #3/83/3-3         NA          NA          20               9
-    ## 9   Con8         #2/95/3         NA          NA          20               8
-    ## 10  Con8     #3/5/2/2/95       28.5          NA          20               8
-    ## 11  Con8   #1/6/2/2/95-2         NA          NA          20               7
-    ## 12  Con8 #3/5/3/83/3-3-2         NA          NA          20               8
-    ## 13  Con8   #3/6/2/2/95-3         NA          NA          20               7
-    ## 14  Mod7       #2/95/2-2         NA          NA          20               7
-    ## 15  Mod7       #3/82/3-2       28.0        45.9          20               5
-    ## 16  Mod7      #8/110/3-2         NA          NA          20               9
-    ## 17  Mod7            #106       21.7        37.8          20               5
-    ## 18  Low7           #84/2       24.3        40.8          20               8
-    ## 19  Low7            #107       22.6        42.4          20               9
-    ## 20  Low7           #85/2       22.2        38.5          20               8
-    ## 21  Low7             #98       23.8        43.8          20               9
-    ## 22  Low7            #102       22.6        43.3          20              11
-    ## 23  Low7            #101       23.8        42.7          20               9
-    ## 24  Low7            #111       25.5        44.6          20               3
-    ## 25  Mod8             #97       24.5        42.8          20               8
-    ## 26  Mod8           #5/93         NA        41.1          20              11
-    ## 27  Mod8       #7/82-3-2       26.9        43.2          20               7
-    ## 28  Mod8         #2/95/2       28.5        44.5          20               9
-    ## 29  Mod8           #82/4       33.4        52.7          20               8
-    ## 30  Low8             #53       21.8        37.2          20               8
-    ## 31  Low8            #100       20.0        39.2          20               8
-    ## 32  Low8           #4/84       21.8        35.2          20               4
-    ## 33  Low8            #108       25.6        47.5          20               8
-    ## 34  Low8             #99       23.5        39.0          20               6
-    ## 35  Low8            #110       25.5        42.7          20               7
-    ##    pups_dead_birth pups_survive
-    ## 1                4            3
-    ## 2                0            7
-    ## 3                0            5
-    ## 4                1            4
-    ## 5                0            6
-    ## 6                0            4
-    ## 7                0            9
-    ## 8                1            8
-    ## 9                0            8
-    ## 10               0            8
-    ## 11               0            6
-    ## 12               0            8
-    ## 13               0            7
-    ## 14               0            7
-    ## 15               0            5
-    ## 16               0            9
-    ## 17               0            2
-    ## 18               0            8
-    ## 19               0            8
-    ## 20               0            6
-    ## 21               0            9
-    ## 22               0            7
-    ## 23               0            9
-    ## 24               2            3
-    ## 25               1            8
-    ## 26               0            9
-    ## 27               0            7
-    ## 28               0            9
-    ## 29               0            6
-    ## 30               1            7
-    ## 31               0            7
-    ## 32               0            4
-    ## 33               0            7
-    ## 34               0            5
-    ## 35               0            6
+    ## # A tibble: 35 x 8
+    ##    group litter_number   gd0_weight gd18_weight gd_of_birth pups_born_alive
+    ##    <chr> <chr>                <dbl>       <dbl>       <dbl>           <dbl>
+    ##  1 Con7  #85                   19.7        34.7          20               3
+    ##  2 Con7  #1/2/95/2             27          42            19               8
+    ##  3 Con7  #5/5/3/83/3-3         26          41.4          19               6
+    ##  4 Con7  #5/4/2/95/2           28.5        44.1          19               5
+    ##  5 Con7  #4/2/95/3-3           NA          NA            20               6
+    ##  6 Con7  #2/2/95/3-2           NA          NA            20               6
+    ##  7 Con7  #1/5/3/83/3-3/2       NA          NA            20               9
+    ##  8 Con8  #3/83/3-3             NA          NA            20               9
+    ##  9 Con8  #2/95/3               NA          NA            20               8
+    ## 10 Con8  #3/5/2/2/95           28.5        NA            20               8
+    ## # ... with 25 more rows, and 2 more variables: pups_dead_birth <dbl>,
+    ## #   pups_survive <dbl>
 
 ``` r
 drop_na(litters_df, gd0_weight)
 ```
 
+    ## # A tibble: 34 x 8
     ##    group litter_number gd0_weight gd18_weight gd_of_birth pups_born_alive
-    ## 1   Con7           #85       19.7        34.7          20               3
-    ## 2   Con7     #1/2/95/2       27.0        42.0          19               8
-    ## 3   Con7 #5/5/3/83/3-3       26.0        41.4          19               6
-    ## 4   Con7   #5/4/2/95/2       28.5        44.1          19               5
-    ## 5   Con8   #3/5/2/2/95       28.5          NA          20               8
-    ## 6   Con8   #5/4/3/83/3       28.0          NA          19               9
-    ## 7   Mod7           #59       17.0        33.4          19               8
-    ## 8   Mod7          #103       21.4        42.1          19               9
-    ## 9   Mod7     #3/82/3-2       28.0        45.9          20               5
-    ## 10  Mod7     #4/2/95/2       23.5          NA          19               9
-    ## 11  Mod7   #5/3/83/5-2       22.6        37.0          19               5
-    ## 12  Mod7          #106       21.7        37.8          20               5
-    ## 13  Mod7         #94/2       24.4        42.9          19               7
-    ## 14  Mod7           #62       19.5        35.9          19               7
-    ## 15  Low7         #84/2       24.3        40.8          20               8
-    ## 16  Low7          #107       22.6        42.4          20               9
-    ## 17  Low7         #85/2       22.2        38.5          20               8
-    ## 18  Low7           #98       23.8        43.8          20               9
-    ## 19  Low7          #102       22.6        43.3          20              11
-    ## 20  Low7          #101       23.8        42.7          20               9
-    ## 21  Low7          #111       25.5        44.6          20               3
-    ## 22  Low7          #112       23.9        40.5          19               6
-    ## 23  Mod8           #97       24.5        42.8          20               8
-    ## 24  Mod8     #7/82-3-2       26.9        43.2          20               7
-    ## 25  Mod8    #7/110/3-2       27.5        46.0          19               8
-    ## 26  Mod8       #2/95/2       28.5        44.5          20               9
-    ## 27  Mod8         #82/4       33.4        52.7          20               8
-    ## 28  Low8           #53       21.8        37.2          20               8
-    ## 29  Low8           #79       25.4        43.8          19               8
-    ## 30  Low8          #100       20.0        39.2          20               8
-    ## 31  Low8         #4/84       21.8        35.2          20               4
-    ## 32  Low8          #108       25.6        47.5          20               8
-    ## 33  Low8           #99       23.5        39.0          20               6
-    ## 34  Low8          #110       25.5        42.7          20               7
-    ##    pups_dead_birth pups_survive
-    ## 1                4            3
-    ## 2                0            7
-    ## 3                0            5
-    ## 4                1            4
-    ## 5                0            8
-    ## 6                0            8
-    ## 7                0            5
-    ## 8                1            9
-    ## 9                0            5
-    ## 10               0            7
-    ## 11               0            5
-    ## 12               0            2
-    ## 13               1            3
-    ## 14               2            4
-    ## 15               0            8
-    ## 16               0            8
-    ## 17               0            6
-    ## 18               0            9
-    ## 19               0            7
-    ## 20               0            9
-    ## 21               2            3
-    ## 22               1            1
-    ## 23               1            8
-    ## 24               0            7
-    ## 25               1            8
-    ## 26               0            9
-    ## 27               0            6
-    ## 28               1            7
-    ## 29               0            7
-    ## 30               0            7
-    ## 31               0            4
-    ## 32               0            7
-    ## 33               0            5
-    ## 34               0            6
+    ##    <chr> <chr>              <dbl>       <dbl>       <dbl>           <dbl>
+    ##  1 Con7  #85                 19.7        34.7          20               3
+    ##  2 Con7  #1/2/95/2           27          42            19               8
+    ##  3 Con7  #5/5/3/83/3-3       26          41.4          19               6
+    ##  4 Con7  #5/4/2/95/2         28.5        44.1          19               5
+    ##  5 Con8  #3/5/2/2/95         28.5        NA            20               8
+    ##  6 Con8  #5/4/3/83/3         28          NA            19               9
+    ##  7 Mod7  #59                 17          33.4          19               8
+    ##  8 Mod7  #103                21.4        42.1          19               9
+    ##  9 Mod7  #3/82/3-2           28          45.9          20               5
+    ## 10 Mod7  #4/2/95/2           23.5        NA            19               9
+    ## # ... with 24 more rows, and 2 more variables: pups_dead_birth <dbl>,
+    ## #   pups_survive <dbl>
 
 ``` r
 drop_na(litters_df)
 ```
 
+    ## # A tibble: 31 x 8
     ##    group litter_number gd0_weight gd18_weight gd_of_birth pups_born_alive
-    ## 1   Con7           #85       19.7        34.7          20               3
-    ## 2   Con7     #1/2/95/2       27.0        42.0          19               8
-    ## 3   Con7 #5/5/3/83/3-3       26.0        41.4          19               6
-    ## 4   Con7   #5/4/2/95/2       28.5        44.1          19               5
-    ## 5   Mod7           #59       17.0        33.4          19               8
-    ## 6   Mod7          #103       21.4        42.1          19               9
-    ## 7   Mod7     #3/82/3-2       28.0        45.9          20               5
-    ## 8   Mod7   #5/3/83/5-2       22.6        37.0          19               5
-    ## 9   Mod7          #106       21.7        37.8          20               5
-    ## 10  Mod7         #94/2       24.4        42.9          19               7
-    ## 11  Mod7           #62       19.5        35.9          19               7
-    ## 12  Low7         #84/2       24.3        40.8          20               8
-    ## 13  Low7          #107       22.6        42.4          20               9
-    ## 14  Low7         #85/2       22.2        38.5          20               8
-    ## 15  Low7           #98       23.8        43.8          20               9
-    ## 16  Low7          #102       22.6        43.3          20              11
-    ## 17  Low7          #101       23.8        42.7          20               9
-    ## 18  Low7          #111       25.5        44.6          20               3
-    ## 19  Low7          #112       23.9        40.5          19               6
-    ## 20  Mod8           #97       24.5        42.8          20               8
-    ## 21  Mod8     #7/82-3-2       26.9        43.2          20               7
-    ## 22  Mod8    #7/110/3-2       27.5        46.0          19               8
-    ## 23  Mod8       #2/95/2       28.5        44.5          20               9
-    ## 24  Mod8         #82/4       33.4        52.7          20               8
-    ## 25  Low8           #53       21.8        37.2          20               8
-    ## 26  Low8           #79       25.4        43.8          19               8
-    ## 27  Low8          #100       20.0        39.2          20               8
-    ## 28  Low8         #4/84       21.8        35.2          20               4
-    ## 29  Low8          #108       25.6        47.5          20               8
-    ## 30  Low8           #99       23.5        39.0          20               6
-    ## 31  Low8          #110       25.5        42.7          20               7
-    ##    pups_dead_birth pups_survive
-    ## 1                4            3
-    ## 2                0            7
-    ## 3                0            5
-    ## 4                1            4
-    ## 5                0            5
-    ## 6                1            9
-    ## 7                0            5
-    ## 8                0            5
-    ## 9                0            2
-    ## 10               1            3
-    ## 11               2            4
-    ## 12               0            8
-    ## 13               0            8
-    ## 14               0            6
-    ## 15               0            9
-    ## 16               0            7
-    ## 17               0            9
-    ## 18               2            3
-    ## 19               1            1
-    ## 20               1            8
-    ## 21               0            7
-    ## 22               1            8
-    ## 23               0            9
-    ## 24               0            6
-    ## 25               1            7
-    ## 26               0            7
-    ## 27               0            7
-    ## 28               0            4
-    ## 29               0            7
-    ## 30               0            5
-    ## 31               0            6
+    ##    <chr> <chr>              <dbl>       <dbl>       <dbl>           <dbl>
+    ##  1 Con7  #85                 19.7        34.7          20               3
+    ##  2 Con7  #1/2/95/2           27          42            19               8
+    ##  3 Con7  #5/5/3/83/3-3       26          41.4          19               6
+    ##  4 Con7  #5/4/2/95/2         28.5        44.1          19               5
+    ##  5 Mod7  #59                 17          33.4          19               8
+    ##  6 Mod7  #103                21.4        42.1          19               9
+    ##  7 Mod7  #3/82/3-2           28          45.9          20               5
+    ##  8 Mod7  #5/3/83/5-2         22.6        37            19               5
+    ##  9 Mod7  #106                21.7        37.8          20               5
+    ## 10 Mod7  #94/2               24.4        42.9          19               7
+    ## # ... with 21 more rows, and 2 more variables: pups_dead_birth <dbl>,
+    ## #   pups_survive <dbl>
 
 ## `mutate`
 
@@ -1707,106 +490,21 @@ mutate(
   group = str_to_lower(group))
 ```
 
-    ##    group   litter_number gd0_weight gd18_weight gd_of_birth pups_born_alive
-    ## 1   con7             #85       19.7        34.7          20               3
-    ## 2   con7       #1/2/95/2       27.0        42.0          19               8
-    ## 3   con7   #5/5/3/83/3-3       26.0        41.4          19               6
-    ## 4   con7     #5/4/2/95/2       28.5        44.1          19               5
-    ## 5   con7     #4/2/95/3-3         NA          NA          20               6
-    ## 6   con7     #2/2/95/3-2         NA          NA          20               6
-    ## 7   con7 #1/5/3/83/3-3/2         NA          NA          20               9
-    ## 8   con8       #3/83/3-3         NA          NA          20               9
-    ## 9   con8         #2/95/3         NA          NA          20               8
-    ## 10  con8     #3/5/2/2/95       28.5          NA          20               8
-    ## 11  con8     #5/4/3/83/3       28.0          NA          19               9
-    ## 12  con8   #1/6/2/2/95-2         NA          NA          20               7
-    ## 13  con8 #3/5/3/83/3-3-2         NA          NA          20               8
-    ## 14  con8       #2/2/95/2         NA          NA          19               5
-    ## 15  con8   #3/6/2/2/95-3         NA          NA          20               7
-    ## 16  mod7             #59       17.0        33.4          19               8
-    ## 17  mod7            #103       21.4        42.1          19               9
-    ## 18  mod7       #1/82/3-2         NA          NA          19               6
-    ## 19  mod7       #3/83/3-2         NA          NA          19               8
-    ## 20  mod7       #2/95/2-2         NA          NA          20               7
-    ## 21  mod7       #3/82/3-2       28.0        45.9          20               5
-    ## 22  mod7       #4/2/95/2       23.5          NA          19               9
-    ## 23  mod7     #5/3/83/5-2       22.6        37.0          19               5
-    ## 24  mod7      #8/110/3-2         NA          NA          20               9
-    ## 25  mod7            #106       21.7        37.8          20               5
-    ## 26  mod7           #94/2       24.4        42.9          19               7
-    ## 27  mod7             #62       19.5        35.9          19               7
-    ## 28  low7           #84/2       24.3        40.8          20               8
-    ## 29  low7            #107       22.6        42.4          20               9
-    ## 30  low7           #85/2       22.2        38.5          20               8
-    ## 31  low7             #98       23.8        43.8          20               9
-    ## 32  low7            #102       22.6        43.3          20              11
-    ## 33  low7            #101       23.8        42.7          20               9
-    ## 34  low7            #111       25.5        44.6          20               3
-    ## 35  low7            #112       23.9        40.5          19               6
-    ## 36  mod8             #97       24.5        42.8          20               8
-    ## 37  mod8           #5/93         NA        41.1          20              11
-    ## 38  mod8         #5/93/2         NA          NA          19               8
-    ## 39  mod8       #7/82-3-2       26.9        43.2          20               7
-    ## 40  mod8      #7/110/3-2       27.5        46.0          19               8
-    ## 41  mod8         #2/95/2       28.5        44.5          20               9
-    ## 42  mod8           #82/4       33.4        52.7          20               8
-    ## 43  low8             #53       21.8        37.2          20               8
-    ## 44  low8             #79       25.4        43.8          19               8
-    ## 45  low8            #100       20.0        39.2          20               8
-    ## 46  low8           #4/84       21.8        35.2          20               4
-    ## 47  low8            #108       25.6        47.5          20               8
-    ## 48  low8             #99       23.5        39.0          20               6
-    ## 49  low8            #110       25.5        42.7          20               7
-    ##    pups_dead_birth pups_survive weight_change
-    ## 1                4            3          15.0
-    ## 2                0            7          15.0
-    ## 3                0            5          15.4
-    ## 4                1            4          15.6
-    ## 5                0            6            NA
-    ## 6                0            4            NA
-    ## 7                0            9            NA
-    ## 8                1            8            NA
-    ## 9                0            8            NA
-    ## 10               0            8            NA
-    ## 11               0            8            NA
-    ## 12               0            6            NA
-    ## 13               0            8            NA
-    ## 14               0            4            NA
-    ## 15               0            7            NA
-    ## 16               0            5          16.4
-    ## 17               1            9          20.7
-    ## 18               0            6            NA
-    ## 19               0            8            NA
-    ## 20               0            7            NA
-    ## 21               0            5          17.9
-    ## 22               0            7            NA
-    ## 23               0            5          14.4
-    ## 24               0            9            NA
-    ## 25               0            2          16.1
-    ## 26               1            3          18.5
-    ## 27               2            4          16.4
-    ## 28               0            8          16.5
-    ## 29               0            8          19.8
-    ## 30               0            6          16.3
-    ## 31               0            9          20.0
-    ## 32               0            7          20.7
-    ## 33               0            9          18.9
-    ## 34               2            3          19.1
-    ## 35               1            1          16.6
-    ## 36               1            8          18.3
-    ## 37               0            9            NA
-    ## 38               0            8            NA
-    ## 39               0            7          16.3
-    ## 40               1            8          18.5
-    ## 41               0            9          16.0
-    ## 42               0            6          19.3
-    ## 43               1            7          15.4
-    ## 44               0            7          18.4
-    ## 45               0            7          19.2
-    ## 46               0            4          13.4
-    ## 47               0            7          21.9
-    ## 48               0            5          15.5
-    ## 49               0            6          17.2
+    ## # A tibble: 49 x 9
+    ##    group litter_number   gd0_weight gd18_weight gd_of_birth pups_born_alive
+    ##    <chr> <chr>                <dbl>       <dbl>       <dbl>           <dbl>
+    ##  1 con7  #85                   19.7        34.7          20               3
+    ##  2 con7  #1/2/95/2             27          42            19               8
+    ##  3 con7  #5/5/3/83/3-3         26          41.4          19               6
+    ##  4 con7  #5/4/2/95/2           28.5        44.1          19               5
+    ##  5 con7  #4/2/95/3-3           NA          NA            20               6
+    ##  6 con7  #2/2/95/3-2           NA          NA            20               6
+    ##  7 con7  #1/5/3/83/3-3/2       NA          NA            20               9
+    ##  8 con8  #3/83/3-3             NA          NA            20               9
+    ##  9 con8  #2/95/3               NA          NA            20               8
+    ## 10 con8  #3/5/2/2/95           28.5        NA            20               8
+    ## # ... with 39 more rows, and 3 more variables: pups_dead_birth <dbl>,
+    ## #   pups_survive <dbl>, weight_change <dbl>
 
 ## `arrange`
 
@@ -1816,106 +514,21 @@ Let’s rearrange the data.
 arrange(litters_df, gd_of_birth, gd0_weight)
 ```
 
-    ##    group   litter_number gd0_weight gd18_weight gd_of_birth pups_born_alive
-    ## 1   Mod7             #59       17.0        33.4          19               8
-    ## 2   Mod7             #62       19.5        35.9          19               7
-    ## 3   Mod7            #103       21.4        42.1          19               9
-    ## 4   Mod7     #5/3/83/5-2       22.6        37.0          19               5
-    ## 5   Mod7       #4/2/95/2       23.5          NA          19               9
-    ## 6   Low7            #112       23.9        40.5          19               6
-    ## 7   Mod7           #94/2       24.4        42.9          19               7
-    ## 8   Low8             #79       25.4        43.8          19               8
-    ## 9   Con7   #5/5/3/83/3-3       26.0        41.4          19               6
-    ## 10  Con7       #1/2/95/2       27.0        42.0          19               8
-    ## 11  Mod8      #7/110/3-2       27.5        46.0          19               8
-    ## 12  Con8     #5/4/3/83/3       28.0          NA          19               9
-    ## 13  Con7     #5/4/2/95/2       28.5        44.1          19               5
-    ## 14  Con8       #2/2/95/2         NA          NA          19               5
-    ## 15  Mod7       #1/82/3-2         NA          NA          19               6
-    ## 16  Mod7       #3/83/3-2         NA          NA          19               8
-    ## 17  Mod8         #5/93/2         NA          NA          19               8
-    ## 18  Con7             #85       19.7        34.7          20               3
-    ## 19  Low8            #100       20.0        39.2          20               8
-    ## 20  Mod7            #106       21.7        37.8          20               5
-    ## 21  Low8             #53       21.8        37.2          20               8
-    ## 22  Low8           #4/84       21.8        35.2          20               4
-    ## 23  Low7           #85/2       22.2        38.5          20               8
-    ## 24  Low7            #107       22.6        42.4          20               9
-    ## 25  Low7            #102       22.6        43.3          20              11
-    ## 26  Low8             #99       23.5        39.0          20               6
-    ## 27  Low7             #98       23.8        43.8          20               9
-    ## 28  Low7            #101       23.8        42.7          20               9
-    ## 29  Low7           #84/2       24.3        40.8          20               8
-    ## 30  Mod8             #97       24.5        42.8          20               8
-    ## 31  Low7            #111       25.5        44.6          20               3
-    ## 32  Low8            #110       25.5        42.7          20               7
-    ## 33  Low8            #108       25.6        47.5          20               8
-    ## 34  Mod8       #7/82-3-2       26.9        43.2          20               7
-    ## 35  Mod7       #3/82/3-2       28.0        45.9          20               5
-    ## 36  Con8     #3/5/2/2/95       28.5          NA          20               8
-    ## 37  Mod8         #2/95/2       28.5        44.5          20               9
-    ## 38  Mod8           #82/4       33.4        52.7          20               8
-    ## 39  Con7     #4/2/95/3-3         NA          NA          20               6
-    ## 40  Con7     #2/2/95/3-2         NA          NA          20               6
-    ## 41  Con7 #1/5/3/83/3-3/2         NA          NA          20               9
-    ## 42  Con8       #3/83/3-3         NA          NA          20               9
-    ## 43  Con8         #2/95/3         NA          NA          20               8
-    ## 44  Con8   #1/6/2/2/95-2         NA          NA          20               7
-    ## 45  Con8 #3/5/3/83/3-3-2         NA          NA          20               8
-    ## 46  Con8   #3/6/2/2/95-3         NA          NA          20               7
-    ## 47  Mod7       #2/95/2-2         NA          NA          20               7
-    ## 48  Mod7      #8/110/3-2         NA          NA          20               9
-    ## 49  Mod8           #5/93         NA        41.1          20              11
-    ##    pups_dead_birth pups_survive
-    ## 1                0            5
-    ## 2                2            4
-    ## 3                1            9
-    ## 4                0            5
-    ## 5                0            7
-    ## 6                1            1
-    ## 7                1            3
-    ## 8                0            7
-    ## 9                0            5
-    ## 10               0            7
-    ## 11               1            8
-    ## 12               0            8
-    ## 13               1            4
-    ## 14               0            4
-    ## 15               0            6
-    ## 16               0            8
-    ## 17               0            8
-    ## 18               4            3
-    ## 19               0            7
-    ## 20               0            2
-    ## 21               1            7
-    ## 22               0            4
-    ## 23               0            6
-    ## 24               0            8
-    ## 25               0            7
-    ## 26               0            5
-    ## 27               0            9
-    ## 28               0            9
-    ## 29               0            8
-    ## 30               1            8
-    ## 31               2            3
-    ## 32               0            6
-    ## 33               0            7
-    ## 34               0            7
-    ## 35               0            5
-    ## 36               0            8
-    ## 37               0            9
-    ## 38               0            6
-    ## 39               0            6
-    ## 40               0            4
-    ## 41               0            9
-    ## 42               1            8
-    ## 43               0            8
-    ## 44               0            6
-    ## 45               0            8
-    ## 46               0            7
-    ## 47               0            7
-    ## 48               0            9
-    ## 49               0            9
+    ## # A tibble: 49 x 8
+    ##    group litter_number gd0_weight gd18_weight gd_of_birth pups_born_alive
+    ##    <chr> <chr>              <dbl>       <dbl>       <dbl>           <dbl>
+    ##  1 Mod7  #59                 17          33.4          19               8
+    ##  2 Mod7  #62                 19.5        35.9          19               7
+    ##  3 Mod7  #103                21.4        42.1          19               9
+    ##  4 Mod7  #5/3/83/5-2         22.6        37            19               5
+    ##  5 Mod7  #4/2/95/2           23.5        NA            19               9
+    ##  6 Low7  #112                23.9        40.5          19               6
+    ##  7 Mod7  #94/2               24.4        42.9          19               7
+    ##  8 Low8  #79                 25.4        43.8          19               8
+    ##  9 Con7  #5/5/3/83/3-3       26          41.4          19               6
+    ## 10 Con7  #1/2/95/2           27          42            19               8
+    ## # ... with 39 more rows, and 2 more variables: pups_dead_birth <dbl>,
+    ## #   pups_survive <dbl>
 
 ## Pipes
 
