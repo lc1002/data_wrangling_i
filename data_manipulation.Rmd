@@ -18,3 +18,36 @@ litters_df = janitor::clean_names(litters_df)
 pups_df = read.csv("data/FAS_pups.csv")
 pups_df = janitor::clean_names(pups_df)
 ```
+
+## `select`
+
+Let's select some columns.
+
+```{r}
+select(litters_df, group, litter_number)
+select(litters_df, group, gd0_weight, gd18_weight)
+
+# To select a sequence number of columns in the data use ":"
+select(litters_df, group, gd0_weight:gd_of_birth)
+
+# Select all columns that start with "pups" or use end_with to select all columns that end with specific characters or contains
+select(litters_df,group, starts_with("pups"))
+
+# Select all columns except litter_number
+select(litters_df, -litter_number)
+
+select(litters_df, GROUP = group, litter_number)
+
+rename(litters_df, GROUP = group)
+
+# everything()-- keeps everything in the data, but listing litter_number first, relocating columns
+select(litters_df, litter_number, everything())
+relocate(litters_df, litter_number)
+
+select(pups_df, litter_number, sex, pd_ears)
+
+select(litters_df, group)
+
+# pull(litters_df, group)
+```
+
