@@ -123,3 +123,26 @@ fas_df =
 ```
 
 `gather` and `spread` instead of `pivot_longer` and `pivot_wider`. The new functions were updated for good reasons; `gather` and `spread` will still exist, but they’re going to be less common over time.
+
+## Learning Assignments 
+
+This code chunk will import `surv_os` and `surv_program_git` data and cleans both datasets, and then joins them.
+
+```{r}
+surv_os = read_csv("survey_results/surv_os.csv") %>% 
+  janitor::clean_names() %>% 
+  rename(id = what_is_your_uni, os = what_operating_system_do_you_use)
+
+surv_pr_git = read_csv("survey_results/surv_program_git.csv") %>% 
+  janitor::clean_names() %>% 
+  rename(
+    id = what_is_your_uni, 
+    prog = what_is_your_degree_program,
+    git_exp = which_most_accurately_describes_your_experience_with_git)
+
+left_join(surv_os, surv_pr_git)
+inner_join(surv_os, surv_pr_git)
+anti_join(surv_os, surv_pr_git)
+anti_join(surv_pr_git, surv_os)
+```
+
