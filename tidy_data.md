@@ -52,3 +52,35 @@ analysis_df %>%
 |:----------|----:|----:|
 | treatment |   4 |   8 |
 | control   |   3 |   6 |
+
+## bind\_rows
+
+import the LotR movie words stuff
+
+``` r
+fellowship_df = 
+  read_excel("data/LotR_Words.xlsx", range = "B3:D6") %>% 
+  mutate(movie = "fellowship_rings") 
+
+two_towers_df = 
+  read_excel("data/LotR_Words.xlsx", range = "F3:H6") %>% 
+  mutate(movie = "two_towers")
+
+return_df = 
+  read_excel("data/LotR_Words.xlsx", range = "J3:L6") %>% 
+  mutate(movie = "return_king")
+
+lotr_df = 
+  bind_rows(fellowship_df, two_towers_df, return_df) %>% 
+  janitor::clean_names() %>% 
+  pivot_longer(
+    female:male,
+    names_to = "sex",
+    values_to = "words"
+  ) %>% 
+  mutate(race = str_to_lower(race)) %>% 
+  relocate(movie)
+```
+
+`rbind` is notably worse than `bind_rows`. never use `rbind()`, always
+use `bind_rows`.
