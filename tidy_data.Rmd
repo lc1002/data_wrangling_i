@@ -89,3 +89,37 @@ lotr_df =
 
 `rbind` is notably worse than `bind_rows`. never use `rbind()`, always use `bind_rows`.
 
+
+## joins
+
+Look at FAS data. This imports and cleans litters and pups data.
+
+```{r}
+# a problem with litters dataset is the group column, there are two variables in the column that are squished together
+
+litters_df = 
+  read_csv("data/FAS_litters.csv") %>% 
+  janitor::clean_names() %>% 
+  separate(group, into = c("dose", "day_of_tx"), 3) %>% 
+  relocate(litter_number) %>% 
+  mutate(dose = str_to_lower(dose))
+  
+  
+pups_df = 
+  read_csv("data/FAS_pups.csv") %>% 
+  janitor::clean_names() %>% 
+  mutate(
+    sex = recode(sex, `1` = "male", `2` = "female"), ## putting `` makes r realize it's variable not a number
+    sex = factor(sex)) 
+
+```
+
+Let's join these up!
+
+```{r}
+fas_df = 
+  left_join(pups_df, litters_df, by = "litter_number") %>% 
+  relocate(litter_number, dose, day_of_tx)
+```
+
+`gather` and `spread` instead of `pivot_longer` and `pivot_wider`. The new functions were updated for good reasons; `gather` and `spread` will still exist, but they’re going to be less common over time.
